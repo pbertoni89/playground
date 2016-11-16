@@ -29,6 +29,12 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AsyncTcpClient", "AsyncTcpC
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AsyncTcpServer", "AsyncTcpServer\AsyncTcpServer.vbproj", "{1316F77B-BF93-43F0-8FEB-B53DD0CAAA32}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Boost Chat Client", "Boost Chat Client\Boost Chat Client.vcxproj", "{E24B6F1C-B20A-49C9-A871-7B7740F20E71}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Boost Chat Server", "Boost Chat Server\Boost Chat Server.vcxproj", "{FF920734-E919-4217-99C6-2BAB60E7FD9E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Boost Asio Http Server", "Boost Asio Http Server\Boost Asio Http Server.vcxproj", "{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +181,36 @@ Global
 		{1316F77B-BF93-43F0-8FEB-B53DD0CAAA32}.Release|x64.Build.0 = Release|Any CPU
 		{1316F77B-BF93-43F0-8FEB-B53DD0CAAA32}.Release|x86.ActiveCfg = Release|Any CPU
 		{1316F77B-BF93-43F0-8FEB-B53DD0CAAA32}.Release|x86.Build.0 = Release|Any CPU
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Debug|x64.ActiveCfg = Debug|x64
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Debug|x64.Build.0 = Debug|x64
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Debug|x86.ActiveCfg = Debug|Win32
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Debug|x86.Build.0 = Debug|Win32
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Release|Any CPU.ActiveCfg = Release|Win32
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Release|x64.ActiveCfg = Release|x64
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Release|x64.Build.0 = Release|x64
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Release|x86.ActiveCfg = Release|Win32
+		{E24B6F1C-B20A-49C9-A871-7B7740F20E71}.Release|x86.Build.0 = Release|Win32
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Debug|x64.ActiveCfg = Debug|x64
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Debug|x64.Build.0 = Debug|x64
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Debug|x86.ActiveCfg = Debug|Win32
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Debug|x86.Build.0 = Debug|Win32
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Release|x64.ActiveCfg = Release|x64
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Release|x64.Build.0 = Release|x64
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Release|x86.ActiveCfg = Release|Win32
+		{FF920734-E919-4217-99C6-2BAB60E7FD9E}.Release|x86.Build.0 = Release|Win32
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Debug|x64.ActiveCfg = Debug|x64
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Debug|x64.Build.0 = Debug|x64
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Debug|x86.ActiveCfg = Debug|Win32
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Debug|x86.Build.0 = Debug|Win32
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Release|Any CPU.ActiveCfg = Release|Win32
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Release|x64.ActiveCfg = Release|x64
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Release|x64.Build.0 = Release|x64
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Release|x86.ActiveCfg = Release|Win32
+		{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,17 +20,16 @@ Public Class Form1
 	'specificy the TCP/IP Port number that the server will listen on
 	Private portNumber As Integer = 8888
 
-	'create the collection instance to store connected clients
 	Private clients As New ConnectedClientCollection
-	'declare a variable to hold the listener instance
+
 	Private listener As TcpListener
-	'declare a variable to hold the cancellation token source instance
+
 	Private tokenSource As CancellationTokenSource
-	'create a list to hold any processing tasks started when clients connect
+
 	Private clientTasks As New List(Of Task)
 
 	Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-		'setup the sample's user interface
+
 		Me.Text = "Server Example"
 		Controls.Add(layoutSplit)
 		layoutSplit.Panel1.Controls.Add(clientListBox)
@@ -43,6 +42,7 @@ Public Class Form1
 		layoutTable.Controls.Add(outputTextBox)
 		layoutTable.Controls.Add(inputTextBox)
 		layoutTable.Controls.Add(sendButton)
+
 		'use databinding to facilitate displaying received data for each connected client
 		clientBindingSource.DataSource = clients
 		clientListBox.DataSource = clientBindingSource
@@ -51,33 +51,27 @@ Public Class Form1
 
 
 	Private Async Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
-		'this example uses the button text as a state indicator for the server; your real
-		'application may wish to provide a local boolean or enum field to indicate the server's operational state 
-		If startButton.Text = "Start" Then
-			'indicate that the server is running
-			startButton.Text = "Stop"
 
-			'create a new cancellation token source instance
+		If startButton.Text = "Start" Then
+
+			startButton.Text = "Stop"
 			tokenSource = New CancellationTokenSource
-			'create a new listener instance bound to the desired address and port
-			listener = New TcpListener(IPAddress.Any, portNumber)
-			'start the listener
+			listener = New TcpListener(IPAddress.Any, portNumber) ' desired address and port
 			listener.Start()
 
-			'begin accepting clients until the listener is closed; closing the listener while
-			'it is waiting for a client connection causes an ObjectDisposedException which can
-			'be trapped and used to exit the listening routine
+			' Begin accepting clients until the listener is closed; closing the listener while
+			' it is waiting for a client connection causes an ObjectDisposedException which can
+			' be trapped and used to exit the listening routine
 			While True
 				Try
-					'wait for a client
+					' Wait for a client
 					Dim socketClient As TcpClient = Await listener.AcceptTcpClientAsync
-					'record the new client connection
+					' Record the new client connection
 					Dim client As New ConnectedClient(socketClient)
 					clientBindingSource.Add(client)
-					'begin executing an async task to process the client's data stream
+					' Begin executing an async task to process the client's data stream
 					client.Task = ProcessClientAsync(client, tokenSource.Token)
-					'store the task so that we can wait for any existing connections to close
-					'while performing a server shutdown
+					' Store the task so that we can wait for any existing connections to close while performing a server shutdown
 					clientTasks.Add(client.Task)
 				Catch odex As ObjectDisposedException
 					'listener stopped, so server is shutting down

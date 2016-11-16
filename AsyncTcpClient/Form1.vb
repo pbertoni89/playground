@@ -82,6 +82,10 @@ Public Class Form1
 			Dim stream As NetworkStream = client.GetStream
 			Dim message As New XProtocol.XMessage(<TextMessage text1=<%= inputTextBox.Text %>/>)
 			Dim buffer() As Byte = message.ToByteArray
+
+			Dim msgString As String = System.Text.Encoding.Default.GetString(buffer)
+			MsgBox("I am sending " & msgString)
+
 			Try
 				Await stream.WriteAsync(buffer, 0, buffer.Length)
 			Catch ioex As System.IO.IOException
