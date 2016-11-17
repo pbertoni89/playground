@@ -148,8 +148,16 @@ private:
 		{
 			if (!ec)
 			{
-				_room.deliver(_read_msg);
-				_do_read_header();
+				if (_read_msg.to_string() == "COMMAND")
+				{
+					std::cout << "A command was issued !!!";
+					_room.deliver(chat_message("RESPONSE"));
+				}
+				else
+				{
+					_room.deliver(_read_msg);
+				}
+				_do_read_header();				// RECURSION
 			}
 			else
 			{

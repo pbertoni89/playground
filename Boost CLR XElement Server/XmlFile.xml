@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<pbElement pbAttribute="A0">
+		<pbValue>ja</pbValue>
+	</pbElement>
+	<pbElement pbAttribute="A1">
+		<pbValue>display</pbValue>
+	</pbElement>
+	<pbElement pbAttribute="A2">
+		<pbValue>Monitor</pbValue>
+	</pbElement>
+</root>

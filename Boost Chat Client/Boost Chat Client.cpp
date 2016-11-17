@@ -13,6 +13,8 @@
 #include <cstdlib>
 #include <deque>
 #include <iostream>
+#include <string>
+#include <sstream>
 #include <thread>
 #include <boost/asio.hpp>
 #include "..\Boost Chat Server\chat_message.hpp"
@@ -115,7 +117,7 @@ private:
 			if (!ec)
 			{
 				_write_msgs.pop_front();
-				if (!_write_msgs.empty())
+				if (!_write_msgs.empty())	// there is at leaste another message in queue: recursion
 				{
 					do_write();
 				}
@@ -144,23 +146,22 @@ int main(int argc, char* argv[])
 
 		tcp::resolver resolver(io_service);
 		auto endpoint_iterator = resolver.resolve({ argv[1], argv[2] });
-		chat_client c(io_service, endpoint_iterator);
+		chat_client client(io_service, endpoint_iterator);
 
-		std::thread t([&io_service]() { io_service.run(); });
+		std::thread thread_io_service([&io_service]() { io_service.run(); });
 
 		char line[chat_message::max_body_length + 1];
 
 		while (std::cin.getline(line, chat_message::max_body_length + 1))
 		{
-			chat_message msg;
-			msg.set_body_length(std::strlen(line));
-			std::memcpy(msg.body(), line, msg.get_body_length());
-			msg.encode_header();
-			c.write(msg);
+			std::string sLine(line);
+
+			chat_message msg(line);
+			client.write(msg);
 		}
 
-		c.close();
-		t.join();
+		client.close();
+		thread_io_service.join();
 	}
 	catch (std::exception& e)
 	{

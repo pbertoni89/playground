@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1ACDFF0D-EC96-47E7-9D01-1819896D5F52}</ProjectGuid>
+    <ProjectGuid>{C8AD6AEC-F87B-477B-B0C3-47D706029328}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>BoostAsioHttpServer</RootNamespace>
+    <RootNamespace>BoostJSONClient</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -88,7 +88,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\xspectra-core\libs</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +118,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\xspectra-core\libs</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,27 +146,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="connection.hpp" />
-    <ClInclude Include="connection_manager.hpp" />
-    <ClInclude Include="header.hpp" />
-    <ClInclude Include="mime_types.hpp" />
-    <ClInclude Include="reply.hpp" />
-    <ClInclude Include="request.hpp" />
-    <ClInclude Include="request_handler.hpp" />
-    <ClInclude Include="request_parser.hpp" />
-    <ClInclude Include="server.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="connection.cpp" />
-    <ClCompile Include="connection_manager.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mime_types.cpp" />
-    <ClCompile Include="reply.cpp" />
-    <ClCompile Include="request_handler.cpp" />
-    <ClCompile Include="request_parser.cpp" />
-    <ClCompile Include="server.cpp" />
+    <ClCompile Include="boost_json_client.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

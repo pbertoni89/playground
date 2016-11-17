@@ -1,80 +1,68 @@
-#pragma once
+#include "unman_message.hpp"
 
-//
-// chat_message.hpp
-// ~~~~~~~~~~~~~~~~
-//
-// Copyright (c) 2003-2016 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
-class chat_message
+namespace xspectra
 {
-
-public:
-	enum { header_length = 4 };
-	enum { max_body_length = 512 };
-
-private:
-	char _data[header_length + max_body_length];
-	std::size_t _body_length;
-
-public:
-
-	chat_message() :
+	unman_message::unman_message() :
 		_body_length(0)
 	{
 	}
 
-	chat_message(const char * sBody)
+	unman_message::unman_message(const char * sBody)
 	{
 		set_body_length(std::strlen(sBody));
 		std::memcpy(body(), sBody, _body_length);
 		encode_header();
 	}
 
-	const char * data() const
+	const char *
+	unman_message::data()
+	const
 	{
 		return _data;
 	}
 
-	char * data()
+	char *
+	unman_message::data()
 	{
 		return _data;
 	}
 
-	std::size_t length() const
+	std::size_t
+	unman_message::length()
+	const
 	{
 		return header_length + _body_length;
 	}
 
-	const char * body() const
+	const char *
+	unman_message::body()
+	const
 	{
 		return _data + header_length;
 	}
 
-	char * body()
+	char *
+	unman_message::body()
 	{
 		return _data + header_length;
 	}
 
-	const std::string to_string() const
+	const std::string
+	unman_message::to_string()
+	const
 	{
 		return std::string(body(), _body_length);
 	}
 
-	std::size_t get_body_length() const
+	std::size_t
+	unman_message::get_body_length()
+	const
 	{
 		return _body_length;
 	}
 
-	void set_body_length(std::size_t new_length)
+	void
+	unman_message::set_body_length(std::size_t new_length)
 	{
 		_body_length = new_length;
 
@@ -82,7 +70,8 @@ public:
 			_body_length = max_body_length;
 	}
 
-	bool decode_header()
+	bool
+	unman_message::decode_header()
 	{
 		char header[header_length + 1] = "";
 		std::strncat(header, _data, header_length);
@@ -95,10 +84,11 @@ public:
 		return true;
 	}
 
-	void encode_header()
+	void
+	unman_message::encode_header()
 	{
 		char header[header_length + 1] = "";
 		std::sprintf(header, "%4d", static_cast<int>(_body_length));
 		std::memcpy(_data, header, header_length);
 	}
-};
+}

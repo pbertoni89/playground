@@ -84,7 +84,6 @@ Public Class Form1
 			Dim buffer() As Byte = message.ToByteArray
 
 			Dim msgString As String = System.Text.Encoding.Default.GetString(buffer)
-			MsgBox("I am sending " & msgString)
 
 			Try
 				Await stream.WriteAsync(buffer, 0, buffer.Length)
