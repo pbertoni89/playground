@@ -31,6 +31,7 @@ Public Class Form1
 
 
 	Private Async Sub connectButton_Click(sender As Object, e As EventArgs) Handles connectButton.Click
+
 		If connectButton.Text = "Connect" Then
 			client = New TcpClient
 			Try
@@ -48,23 +49,30 @@ Public Class Form1
 						Dim read As Integer = Await stream.ReadAsync(buffer, 0, buffer.Length)
 						If read > 0 Then
 							received.AddRange(buffer.Take(read))
-							If XProtocol.XMessage.IsMessageComplete(received) Then
-								Dim message As XProtocol.XMessage = XProtocol.XMessage.FromByteArray(received.ToArray)
-								received.Clear()
-								Select Case message.Element.Name
+
+#If WE_ARE_USING_XML_LINQ Then
+								If XProtocol.XmlLinqMessage.IsMessageComplete(received) Then
+								Dim message As XProtocol.XmlLinqMessage = XProtocol.XmlLinqMessage.FromByteArray(received.ToArray)
+								Select Case Message.Element.Name
 									Case "TextMessage"
-										outputTextBox.AppendText(message.Element.@text1)
+										outputTextBox.AppendText(Message.Element.@text1)
 										outputTextBox.AppendText(ControlChars.NewLine)
 								End Select
-							End If
+								'End If
+#Else
+							Dim message As New XProtocol.XSpectraMessage(received)
+							outputTextBox.AppendText(message.to_string())
+							outputTextBox.AppendText(ControlChars.NewLine)
+#End If
+							received.Clear()
 						Else
-							'server terminated connection
+							' server terminated connection
 							Exit While
 						End If
 					End While
 				End If
 			Catch odex As ObjectDisposedException
-				'client terminated connection
+				' client terminated connection
 			Catch ex As Exception
 				MessageBox.Show(ex.Message)
 				client.Close()
@@ -73,26 +81,31 @@ Public Class Form1
 		Else
 			client.Close()
 		End If
+
 	End Sub
 
 
-	'send message to server
+	' Send message to server
 	Private Async Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
+
 		If client IsNot Nothing AndAlso client.Connected Then
 			Dim stream As NetworkStream = client.GetStream
-			Dim message As New XProtocol.XMessage(<TextMessage text1=<%= inputTextBox.Text %>/>)
-			Dim buffer() As Byte = message.ToByteArray
 
-			Dim msgString As String = System.Text.Encoding.Default.GetString(buffer)
+#If WE_ARE_USING_XML_LINQ Then
+			Dim message As New XProtocol.XmlLinqMessage(<TextMessage text1=<%= inputTextBox.Text %>/>)
+#Else
+			Dim message As New XProtocol.XSpectraMessage(inputTextBox.Text)
+#End If
+			Dim buffer() As Byte = message.ToByteArray
 
 			Try
 				Await stream.WriteAsync(buffer, 0, buffer.Length)
 			Catch ioex As System.IO.IOException
-				'server terminated connection
+				' server terminated connection
 			Catch odex As ObjectDisposedException
-				'client terminated connection
+				' client terminated connection
 			Catch ex As Exception
-				'unknown error occured
+				' unknown error occured
 				MessageBox.Show(ex.Message)
 			End Try
 			inputTextBox.Clear()
@@ -100,8 +113,9 @@ Public Class Form1
 	End Sub
 
 
-	'helper method for getting local IPv4 address
+	' Getting local IPv4 address
 	Private Function GetLocalIP() As IPAddress
+
 		For Each adapter In NetworkInformation.NetworkInterface.GetAllNetworkInterfaces
 			If adapter.OperationalStatus = NetworkInformation.OperationalStatus.Up AndAlso
 				adapter.Supports(NetworkInformation.NetworkInterfaceComponent.IPv4) AndAlso

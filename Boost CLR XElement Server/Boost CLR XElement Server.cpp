@@ -7,6 +7,8 @@
 #endif
 #include <iostream>
 
+/** Taken from https://www.daniweb.com/programming/software-development/threads/417210/how-to-read-xml-data-using-vc/	*/
+
 using namespace System;
 using namespace System::Collections::Generic;
 using namespace System::Linq;

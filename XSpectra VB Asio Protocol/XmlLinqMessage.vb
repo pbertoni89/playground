@@ -1,5 +1,5 @@
 ﻿' Simple wrapper for XElement which implements our message protocol
-Public Class XMessage
+Public Class XmlLinqMessage
 
 	' Start sequence
 	Const SOH As Byte = 1
@@ -25,8 +25,8 @@ Public Class XMessage
 
 
 	' Parse the XElement content from the supplied data according to the message protocol specification
-	Public Shared Function FromByteArray(data() As Byte) As XMessage
-		Return New XMessage(XElement.Parse(System.Text.Encoding.UTF8.GetString(data, 5, data.Length - 6)))
+	Public Shared Function FromByteArray(data() As Byte) As XmlLinqMessage
+		Return New XmlLinqMessage(XElement.Parse(System.Text.Encoding.UTF8.GetString(data, 5, data.Length - 6)))
 	End Function
 
 

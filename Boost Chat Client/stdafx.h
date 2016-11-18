@@ -9,7 +9,14 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <cstdlib>
+#include <deque>
+#include <iostream>
+#include <string>
+#include <sstream>
 
-
-
-// TODO: reference additional headers your program requires here
+#ifdef XSPECTRA_CRL
+using namespace System::Threading;
+#else
+#include <thread>
+#endif

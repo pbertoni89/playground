@@ -102,25 +102,33 @@ Public Class Form1
 
 
 	Private Async Sub sendButton_Click(sender As Object, e As EventArgs) Handles sendButton.Click
-		'ensure a client is selected in the UI
+
+		' ensure a client is selected in the UI
 		If clientBindingSource.Current IsNot Nothing Then
-			'disable send button and input text until the current message is sent
+
+			' disable send button and input text until the current message is sent
 			sendButton.Enabled = False
 			inputTextBox.Enabled = False
-			'get the current client, stream, and data to write
+
+			' get the current client, stream, and data to write
 			Dim client As ConnectedClient = CType(clientBindingSource.Current, ConnectedClient)
 			Dim stream As NetworkStream = client.TcpClient.GetStream
 
-			Dim message As New XProtocol.XMessage(<TextMessage text1=<%= inputTextBox.Text %>/>)
-			Dim buffer() As Byte = message.ToByteArray
+#If WE_ARE_USING_XML_LINQ Then
+			Dim message As New XProtocol.XmlLinqMessage(<TextMessage text1=<%= inputTextBox.Text %>/>)
+#Else
+			Dim message As New XProtocol.XSpectraMessage(inputTextBox.Text)
+#End If
+			Dim buffer() As Byte = message.ToByteArray()
 
-			'wait for the data to be sent to the remote client
+			' wait for the data to be sent to the remote client
 			Await stream.WriteAsync(buffer, 0, buffer.Length)
 
-			'reset and re-enable the input button and text
+			' reset and re-enable the input button and text
 			inputTextBox.Clear()
 			inputTextBox.Enabled = True
 			sendButton.Enabled = True
+
 		End If
 	End Sub
 
