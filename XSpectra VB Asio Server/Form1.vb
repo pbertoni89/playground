@@ -18,7 +18,7 @@ Public Class Form1
 	Friend WithEvents clientBindingSource As New BindingSource
 
 	'specificy the TCP/IP Port number that the server will listen on
-	Private portNumber As Integer = 8888
+	Private portNumber As Integer = 1488
 
 	Private clients As New ConnectedClientCollection
 

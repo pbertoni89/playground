@@ -2,8 +2,11 @@
 
 #include "xspectra-asio/server.hpp"
 
+//#define NOT_SELF_CONTAINED_SERVER_USAGE
+
 int main(int argc, char* argv[])
 {
+#ifdef NOT_SELF_CONTAINED_SERVER_USAGE
 	boost::asio::io_service ioService;
 	std::list<xspectra::asio::server*> servers;
 
@@ -38,5 +41,17 @@ int main(int argc, char* argv[])
 
 	servers.clear();
 
+#else
+	if (argc < 2)
+	{
+		std::cerr << "Usage: server <port>\n";
+		return 1;
+	}
+
+	xspectra::asio::server newServer(std::atoi(argv[0]));
+	newServer.start();
+	// HERE IS THE RUNTIME
+	newServer.join();
+#endif
 	return 0;
 }

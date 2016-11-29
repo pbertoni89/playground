@@ -11,7 +11,7 @@ Public Class Form1
 	Friend inputTextBox As New RichTextBox With {.Anchor = 15}
 	Friend WithEvents sendButton As New Button With {.AutoSize = True, .Text = "Send"}
 
-	Private portNumber As Integer = 8888
+	Private portNumber As Integer = 1488
 	Private client As TcpClient
 	Private received As New List(Of Byte)
 
