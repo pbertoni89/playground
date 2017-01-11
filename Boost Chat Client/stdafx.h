@@ -11,7 +11,6 @@
 #include <tchar.h>
 #include <cstdlib>
 #include <deque>
-#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -20,3 +19,6 @@ using namespace System::Threading;
 #else
 #include <thread>
 #endif
+
+#include "xspectra-asio/stdafx.h"
+#include <xspectra-asio/server.hpp>

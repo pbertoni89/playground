@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#include "xspectra-asio/server.hpp"
-
 //#define NOT_SELF_CONTAINED_SERVER_USAGE
 
 int main(int argc, char* argv[])

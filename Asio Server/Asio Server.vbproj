@@ -119,9 +119,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XSpectra VB Asio Protocol\XSpectra VB Asio Protocol.vbproj">
+    <ProjectReference Include="..\Asio Protocol\Asio Protocol.vbproj">
       <Project>{bcc89831-ae92-41bf-a79b-cb4568b08363}</Project>
-      <Name>XSpectra VB Asio Protocol</Name>
+      <Name>Asio Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
