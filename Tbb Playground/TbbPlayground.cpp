@@ -1,14 +1,21 @@
 #include <iostream>
 #include <tbb/tbb.h>
 
-//#define THREAD_EXAMPLE
-/**  http://www.mupuf.org/blog/2011/11/13/parallel_programming_hello_world_with_intel_tbb			*/
-//#define PARALLEL_REDUCE_EXAMPLE
-/**  https://software.intel.com/en-us/node/506057													*/
-//#define PARALLEL_FOR_EXAMPLE
-#define THREAD_POOL_EXAMPLE
+// --------------------------------------------------------------------------------------------------------
 
-#ifdef THREAD_EXAMPLE
+//#define EXAMPLE_SIMPLE_THREAD
+/**  http://www.mupuf.org/blog/2011/11/13/parallel_programming_hello_world_with_intel_tbb			*/
+//#define EXAMPLE_PARALLEL_REDUCE
+/**  https://software.intel.com/en-us/node/506057													*/
+//#define EXAMPLE_PARALLEL_FOR
+/** ? ? ?																							*/
+//#define EXAMPLE_THREAD_POOL
+/** https://www.threadingbuildingblocks.org/tutorial-intel-tbb-task-based-programming/				*/
+#define EXAMPLE_TASK_BASED
+
+// --------------------------------------------------------------------------------------------------------
+
+#ifdef EXAMPLE_SIMPLE_THREAD
 #include <tbb/compat/thread>	// introduces std::thread
 bool MyThread(int something)
 {
@@ -26,16 +33,14 @@ bool MyThread(int something)
 }
 #endif
 
-#ifdef PARALLEL_FOR_EXAMPLE
+#ifdef EXAMPLE_PARALLEL_FOR
 #include "PseudoMadaProducer.hpp"
 #endif
 
-#ifdef PARALLEL_REDUCE_EXAMPLE
-#include "tbb/parallel_reduce.h"
-#include "tbb/task_scheduler_init.h"
+#ifdef EXAMPLE_PARALLEL_REDUCE
+#include <tbb/parallel_reduce.h>
+#include <tbb/task_scheduler_init.h>
 #include "NumberPrinter.hpp"
-
-using namespace tbb;
 
 void printNumbers(int n)
 {
@@ -47,13 +52,36 @@ void printNumbers(int n)
 }
 #endif
 
-#ifdef THREAD_POOL_EXAMPLE
+#ifdef EXAMPLE_THREAD_POOL
 #include "ThreadPoolExample.hpp"
 #endif
 
+#ifdef EXAMPLE_TASK_BASED
+#include <tbb/task_group.h>
+
+int tbb_fibonacci(int n)
+{
+	if (n<2)
+	{
+		return n;
+	}
+	else
+	{
+		int x, y;
+		tbb::task_group g;
+		g.run([&] {x = tbb_fibonacci(n - 1); });	// spawn a task
+		g.run([&] {y = tbb_fibonacci(n - 2); });	// spawn another task
+		g.wait();									// wait for both tasks to complete
+		return x + y;
+	}
+}
+#endif
+
+// --------------------------------------------------------------------------------------------------------
+
 int main()
 {
-#ifdef THREAD_EXAMPLE
+#ifdef EXAMPLE_SIMPLE_THREAD
 	tbb::tbb_thread pMyThread1(MyThread, 1);
 	std::thread araberara1(MyThread, 11);
 	tbb::tbb_thread pMyThread2(MyThread, 2);
@@ -74,23 +102,28 @@ int main()
 	araberara4.join();
 #endif
 
-#ifdef PARALLEL_REDUCE_EXAMPLE
+#ifdef EXAMPLE_PARALLEL_REDUCE
 	/** initialize the Intel TBB library	*/
 	task_scheduler_init init;
 	printNumbers(1000);
 	//system("PAUSE");
 #endif
 
-#ifdef PARALLEL_FOR_EXAMPLE
+#ifdef EXAMPLE_PARALLEL_FOR
 	float a[4] = { float(1.2), float(3.1), float(4.2), float(0.9) };
 	parallelProduction(a, 4);
 #endif
 
-#ifdef THREAD_POOL_EXAMPLE
+#ifdef EXAMPLE_THREAD_POOL
 	ThreadPoolExample tp;
 	tp.run(ExecutionMode::RUN_ALL_THEN_WAIT);	// ABOUT 2 seconds
 	tp.run(ExecutionMode::RUN_WAIT);			// ABOUT 5 seconds
 	tp.run(ExecutionMode::THREADS);				// ABOUT 2 seconds
+#endif
+
+#ifdef EXAMPLE_TASK_BASED
+	int n = 30;
+	std::cout << "Fib(" << n << ") = " << tbb_fibonacci(n) << std::endl;
 #endif
 
 	return 0;
