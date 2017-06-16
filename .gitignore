@@ -5,6 +5,13 @@ doc/
 build-*
 *.pro.user*
 
+### NB
+
+*/nbproject/private/*
+*/nbproject/Package-*
+*/nbproject/Makefile-*
+
+
 guispellman/seasoning
 
 # VISUAL STUDIO
@@ -97,3 +104,5 @@ _ReSharper.*
 *.vscc 
 *.vssscc
 UpgradeLog*
+/OpenCV Filters/build/
+/OpenCV Filters/dist/
