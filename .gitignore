@@ -1,3 +1,4 @@
+
 # DOCUMENTATION
 doc/
 
@@ -5,12 +6,17 @@ doc/
 build-*
 *.pro.user*
 
+
+
 ### NB
 
-*/nbproject/private/*
-*/nbproject/Package-*
-*/nbproject/Makefile-*
+private/
+Package-*.mk
+Makefile-*.mk
 
+## MATLAB CODER
+mex/
+html/
 
 guispellman/seasoning
 
@@ -106,3 +112,9 @@ _ReSharper.*
 UpgradeLog*
 /OpenCV Filters/build/
 /OpenCV Filters/dist/
+/PlaygroundOpenCVFilters/build/
+/PlaygroundOpenCVFilters/dist/
+/PlaygroundBoostLog/build/
+/PlaygroundBoostLog/dist/
+/Matlab/CoderPlayground/pb_client/build/
+/Matlab/CoderPlayground/pb_client/dist/
