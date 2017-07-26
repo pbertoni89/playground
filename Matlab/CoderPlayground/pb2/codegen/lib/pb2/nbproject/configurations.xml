@@ -2,14 +2,6 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
-      <df name="examples">
-        <in>main.c</in>
-      </df>
-      <df name="interface">
-        <in>_coder_pb2_api.c</in>
-        <in>_coder_pb2_info.c</in>
-        <in>_coder_pb2_mex.c</in>
-      </df>
       <in>pb2.c</in>
       <in>pb2_initialize.c</in>
       <in>pb2_rtwutil.c</in>
