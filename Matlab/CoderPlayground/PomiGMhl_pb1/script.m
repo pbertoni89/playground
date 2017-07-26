@@ -5,13 +5,27 @@ clc
 load('tomVirgin.mat');
 load('corn_1.mat');
 
+%% prefiltering data && a-priori knowledge
+
+brickValidPixels = 105:245;
+brickValidBins = 1:80;
+bgEndTraining = 500;
+bgEndTest = 500;
+nTrainingBricks = 8;
+kSize = 1;
+
+tomVirgin = preFilteringPixelsBricks(tomVirgin, brickValidPixels, brickValidBins);
+mat = preFilteringPixelsBricks(mat, brickValidPixels, brickValidBins);
+
+
 %% fit gm models
 
-[gmfit, validPixIdx, bands] = trainPomiGMhl(tomVirgin, 8, 500, 1);
+[gmfit, validPixIdx, bands] = trainPomiGMhl(tomVirgin, nTrainingBricks, bgEndTraining, kSize);
+
 
 %% process GM hl algorithm
 
-[matAlarmedClose] = processPomiGMhl(mat, gmfit, validPixIdx, bands, 500, 'disk', 2);
+[matAlarmedClose] = processPomiGMhl(mat, gmfit, validPixIdx, bands, bgEndTest, 'disk', 2);
 
 figure('name', 'Output')
 imagesc(matAlarmedClose);
@@ -24,7 +38,7 @@ if isequal(matAlarmedClose, correctOutput)
 	fprintf('Correctness test passed.\n')
 else
 	fprintf('* * * * * Correctness test NOT passed !\n')
-	matDiff = matAlarmedClose-correctOutput;
-	figure('name', 'Error Mat')
-	imagesc(matDiff)
+	matAbsDiff = abs(matAlarmedClose-correctOutput);
+	figure('name', 'Abs Error Mat')
+	imagesc(matAbsDiff)
 end

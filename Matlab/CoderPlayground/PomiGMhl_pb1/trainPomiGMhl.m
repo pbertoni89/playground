@@ -1,4 +1,4 @@
-function [gmfit, validPixIdx, bands] = trainPomiGMhl (trainingData, nBricks, bgEnd, k)
+function [gmfit, validPixIdx, bands] = trainPomiGMhl (data, nBricks, bgEnd, kSize)
 % Fits a GM model for each pixel covering a Pomi Brik. 
 %
 % INPUT ARGUMENTS
@@ -6,7 +6,7 @@ function [gmfit, validPixIdx, bands] = trainPomiGMhl (trainingData, nBricks, bgE
 % tomVirgin: 256*nColumn*128 matrix containing the Pomi Briks used to fit the models
 % nBricks: number of Bricks in tomVirgin
 % bgEnd: background ending column (i.e. 1:bgEnd are background columns in tomVirgin)
-% k: number of gaussian distributions used to fit the model (default is 1)
+% kSize: number of gaussian distributions used to fit the model (default is 1)
 % 
 % OUTPUT 
 %
@@ -15,26 +15,27 @@ function [gmfit, validPixIdx, bands] = trainPomiGMhl (trainingData, nBricks, bgE
 % bands: vector of integration intervals for each pixel
 
 
-% da parametrizzare. sotto nastro, sopra vuoto
-trainingData = trainingData(105:245, :, 1:80);
-tomVirginInt = squeeze(sum(trainingData, 3));
-
-nPix = size(trainingData, 1);
+nPixels = size(data, 1);
 nBands = 2;
+nBandPts = nBands + 1;
+
+dataIntOverBins = squeeze(sum(data, 3));
 
 
-%% find tomato columns
+%% Find tomato columns
 
-tomVirginIntD = edge(tomVirginInt, 'Prewitt');
+dataIntED = edge(dataIntOverBins, 'Prewitt');
+NHOOD = 15;
 
-for i = 1:nPix
+for i = 1:nPixels
 
-	cc = bwconncomp(1 - tomVirginIntD(i, :));
+	cc = bwconncomp(1 - dataIntED(i, :));
 
+	% exactly nBricks connected components are found
 	if cc.NumObjects == nBricks
 
-		se = strel('square',15);
-		colIdx = find(imerode(1-tomVirginIntD(i,:),se));
+		se = strel('square', NHOOD);
+		tomatoColumnIndexes = find(imerode(1-dataIntED(i, :), se));
 		break
 
 	end
@@ -42,103 +43,88 @@ for i = 1:nPix
 end
 
 
-%% find valid pixels
+%% Check Edge Detection
+
+if exist('tomatoColumnIndexes', 'var') ~= 1
+
+	error('Cannot train the classifier (cannot find %d bricks in training dataset)\n', nBricks)
+
+end
 
 
-tomInt = tomVirginInt(:,colIdx);
-faultPix = zeros(nPix,1);
+%% find valid pixels (NOT supported by Coder)
 
-for i = 1:nPix
+dataIntOverBins = dataIntOverBins(:, tomatoColumnIndexes);
+faultPixels = zeros(nPixels, 1);
 
-	E = mean(tomInt(i, :));
-	dev = std(tomInt(i, :));
+for i = 1:nPixels
+
+	E = mean(dataIntOverBins(i, :));
+	dev = std(dataIntOverBins(i, :));
 
 	if dev > 0
-		% test gaussianita'
-		% NOT supported by Coder
-		faultPix(i) = kstest((tomInt(i,:)-E)/dev);
+		trainingDataIntOverBinsStd = (dataIntOverBins(i, :)-E)/dev;
+		% NOT supported by Coder. gaussianity test
+		faultPixels(i) = kstest(trainingDataIntOverBinsStd);
 	else
-		faultPix(i) = 1;
+		faultPixels(i) = 1;
 	end
 end
 
 
-%% update tomato matrix
+%% update training data over valid pixels only
 
-validPixIdx = find(1-faultPix);
-trainingData = trainingData(validPixIdx, :, :);
-nPix = size(trainingData, 1);
+validPixIdx = find(1-faultPixels);
+
+data = data(validPixIdx, :, :);
+tomato = data(:, tomatoColumnIndexes, :);
+
+nPixels = size(data, 1);
 
 
 %% find integration bands for each pixel
 
-bg = trainingData(:, 1:bgEnd, :);
-% sdpettro di bg cumulato sui bin
-bgCum = squeeze(sum(bg, 2));
+bg = data(:, 1:bgEnd, :);
+% spettro di bg cumulato sui bin
+bgIntOverBins = squeeze(sum(bg, 2));
 
-bands = [];
+bands = zeros(nPixels, nBandPts);
 
-for i = 1:nPix
-    
+MIN_SPECTRUM_RATIO = 0.01;
+
+for i = 1:nPixels
+
 	% prendi quei valori dei bin dove hai almeno 1/100 del massimo dello
 	% spettro (in pratica tagliane le code, dove e' troppo piccolo)
-    range = find(bgCum(i, :) > 0.01*max(bgCum(i,:)));
-    m = min(range);
-    M = max(range);
+	spectrumNiceRange = find(bgIntOverBins(i, :) > MIN_SPECTRUM_RATIO * max(bgIntOverBins(i, :)));
+	m = min(spectrumNiceRange);
+	M = max(spectrumNiceRange);
 	% generi le bande come vettori che hanno min med e max di bin
-    bands = [bands; round(linspace(m,M,nBands+1))];
-    
+	bands(i, :) = round(linspace(m, M, nBandPts));
+
 end
 
 
 %% compute mean background energies
 
-%%%bgEnergies = computeEnergies(bg, 1, bands, nBands);
-
-bgEnergies = [];
-
-for i = 1:nPix
-
-	for j = 1:nBands
-
-		bgEnergies(i,:,j) = sum(squeeze(bg(i,:,bands(i,j):bands(i,j+1))),2);
-
-	end
-
-end
-
-bgEnergies = squeeze(mean(bgEnergies,2));
-
-%% compute tomato energies
-
-% processo analogo senza media ovviamente
-tom = trainingData(:, colIdx, :);
-tomEnergies = [];
-
-for i = 1:nPix
-    
-    for j = 1:nBands
-        
-        tomEnergies(i, :, j) = sum(squeeze(tom(i, :, bands(i, j):bands(i,j+1))),2);
-        
-    end
-    
-end
+bg_E_Mean = compute_E(bg, 1, bands);
 
 
-%% fit GM models
+%% Prepare l,h (separated from fit GM models to cut off Coder problems
 
-gmfit = {};
+tomato_e = compute_e_logE(tomato, bg_E_Mean, bands);
 
-for i = 1:nPix
 
-	% vettori degli l e h
-	l = -log(tomEnergies(i, :, 1)/bgEnergies(i,1));
-	h = -log(tomEnergies(i, :, 2) / bgEnergies(i, 2));
-	data = [l ; h]';
+%% fit GM models (NOT supported by Coder)
 
+gmfit = cell(1, nPixels);
+
+for i = 1:nPixels
+
+	pxTomato_e = squeeze(tomato_e(i, :, :));
 	% NOT supported by Coder
-	gmfit{i} = fitgmdist(data, k, 'CovarianceType', 'full', 'SharedCovariance', true);
+	gmfit{i} = fitgmdist(pxTomato_e, kSize, 'CovarianceType', 'full', 'SharedCovariance', true);
+
 end
 
 
