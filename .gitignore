@@ -10,7 +10,9 @@ build-*
 
 ### NB
 
+.dep.inc
 private/
+*.bash
 Package-*.mk
 Makefile-*.mk
 
@@ -118,3 +120,5 @@ UpgradeLog*
 /PlaygroundBoostLog/dist/
 /Matlab/CoderPlayground/pb_client/build/
 /Matlab/CoderPlayground/pb_client/dist/
+/OpenCvGaussianModeling/build/
+/OpenCvGaussianModeling/dist/

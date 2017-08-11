@@ -118,12 +118,12 @@ int main()
 
 	// Cast std::vector<double> to PyList
 	auto vDist = example_normal_buckets(10000, 2.0, 10.0);
-	// auto vDist = example_uniform_buckets(10000, 2.0, 10.0);	
+	//auto vDist = example_uniform_buckets(10000, 2.0, 10.0);
 
 	pPyPar = PyList_New(vDist.size());
 	for (int i=0; i<vDist.size(); i++)
 	{
-		PyList_SetItem(pPyPar, i, PyFloat_FromDouble(vDist[i]));	
+		PyList_SetItem(pPyPar, i, PyFloat_FromDouble(vDist[i]));
 	}
 
 	// parameter should be a tuple

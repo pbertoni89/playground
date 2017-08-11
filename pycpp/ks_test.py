@@ -21,15 +21,16 @@ def foo_kstest():
 
 
 
-def run_kstest(vData, alpha = 0.05):
+def run_kstest(vData, standardize = False, alpha = 0.05):
 	"""
 		VC is standardized here
 	"""
 
 	# Won't work if input is a list
-	vData = np.array(vData)
-	mu = vData.mean()
-	sigma = vData.std()
+	if standardize is True:
+		vData = np.array(vData)
+		mu = vData.mean()
+		sigma = vData.std()
 
 	# Standardize
 	normData = vData - mu

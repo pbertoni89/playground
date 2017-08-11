@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>aishack.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,7 +13,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>pycpp_main.cpp</itemPath>
+      <itemPath>aishack.cpp</itemPath>
+      <itemPath>ocvgm.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -24,7 +26,6 @@
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
-      <itemPath>ks_test.py</itemPath>
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
@@ -37,13 +38,20 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <architecture>2</architecture>
           <standard>8</standard>
         </ccTool>
         <linkerTool>
-          <commandLine>-lpython2.7</commandLine>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
+          </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="pycpp_main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="aishack.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="aishack.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ocvgm.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -58,6 +66,8 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <architecture>2</architecture>
+          <standard>8</standard>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -65,8 +75,17 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
-      <item path="pycpp_main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="aishack.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="aishack.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ocvgm.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>
