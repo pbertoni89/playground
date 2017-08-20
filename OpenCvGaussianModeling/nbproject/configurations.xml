@@ -34,7 +34,7 @@
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
+        <rebuildPropChanged>true</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <ccTool>
@@ -43,7 +43,11 @@
         </ccTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
+            <linkerOptionItem>-lopencv_core</linkerOptionItem>
+            <linkerOptionItem>-lopencv_highgui</linkerOptionItem>
+            <linkerOptionItem>-lopencv_imgproc</linkerOptionItem>
+            <linkerOptionItem>-lopencv_imgcodecs</linkerOptionItem>
+            <linkerOptionItem>-lopencv_ml</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
