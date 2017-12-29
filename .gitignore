@@ -114,10 +114,10 @@ _ReSharper.*
 UpgradeLog*
 /OpenCV Filters/build/
 /OpenCV Filters/dist/
-/PlaygroundOpenCVFilters/build/
-/PlaygroundOpenCVFilters/dist/
-/PlaygroundBoostLog/build/
-/PlaygroundBoostLog/dist/
+/Filters/build/
+/Filters/dist/
+/Logger/build/
+/Logger/dist/
 /Matlab/CoderPlayground/pb_client/build/
 /Matlab/CoderPlayground/pb_client/dist/
 /OpenCvGaussianModeling/build/
