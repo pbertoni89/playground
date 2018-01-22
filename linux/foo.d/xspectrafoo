@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+echo "xspectrafoo script start in "${PWD}
+
+
+# Commands
+
+./loop.sh "foo_script.sh" "fb" &
+# This affect systemctl start xspectrad.service
+sleep 2
+./loop.sh "foo_script.sh" "gc" &
+./loop.sh "foo_script.sh" "gb" &
+
+### ./loop.sh "foo_script.sh" "endless"
+
+echo "xspectrafoo script end"

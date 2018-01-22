@@ -1,0 +1,44 @@
+#
+# XSpectra Server systemctl configuration
+#
+# 2017 Xnext s.r.l.
+# pbertoni@x-next.com
+#
+# Useful links:
+#	https://www.freedesktop.org/software/systemd/man/systemd.service.html
+#	https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/sect-managing_services_with_systemd-unit_files
+#
+# After each edit, be sure to run
+#	cp xspectrad.service /etc/systemd/system/
+#	chmod 644 /etc/systemd/system/xspectrad.service
+#	systemctl daemon-reload
+#
+
+[Unit]
+
+Description = XSpectra Foo Daemon
+
+[Service]
+# Type = simple
+# See https://stackoverflow.com/questions/46470071/linux-service-unexpectedly-died/46473596#46473596
+Type = oneshot
+
+RemainAfterExit = yes
+
+User = xnext
+
+PIDFile=/var/xspectra/xspectrafood.pid
+
+WorkingDirectory = /home/xnext/xspectra-core/bin/foo.d
+
+ExecStart = /home/xnext/xspectra-core/mca/foo.d/xspectrafoo
+
+# DEBUG WITH
+
+# ExecStop = /home/xnext/xspectra-core/bin/abort.sh
+# ExecReload = /home/xnext/xspectra-core/bin/abort.sh && /home/xnext/xspectra-core/bin/foo.d/xspectrafoo
+# Restart = on-abort
+## Restart = always
+
+[Install]
+WantedBy = multi-user.target

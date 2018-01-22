@@ -34,22 +34,19 @@
 #include <vector>
 #include <string>
 #include <unistd.h>
-
+#include <sys/stat.h>
 
 #include <helper_cuda.h>
 
-
-/////////////////////////////////////////////////////////////////
-// Some utility code to define grid_stride_range
-// Normally this would be in a header but it's here
-// for didactic purposes. Uses 
+/**
+ * Some utility code to define grid_stride_range
+ * Normally this would be in a header but it's here
+ * for didactic purposes
+ */
 #include "range.hpp"
 
 using namespace util::lang;
 
-
-
-#include <sys/stat.h>
 
 off_t fsize(const char * FILENAME)
 {
@@ -81,6 +78,7 @@ __device__
 step_range<T> grid_stride_range(T begin, T end)
 {
 	begin += blockDim.x * blockIdx.x + threadIdx.x;
+
 	return range(begin, end).step(gridDim.x * blockDim.x);
 }
 
@@ -110,7 +108,7 @@ void ours_count_if(int * count, T * data, int n, Predicate p)
 __global__
 void d_xyzw_frequency_ours(int * count, char * text, int n)
 {
-	const char letters[] { 'x','y','z','w'};
+	const char letters[] {'x','y','z','w'};
 
 	ours_count_if(count, text, n,
 			[&](char c)
@@ -176,6 +174,7 @@ void h_xyzw_frequency_thrust(int * count, char * text, int n)
 #endif
 
 
+// ~  Performance Tester  ~ START ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
 std::vector<std::pair<std::chrono::time_point<std::chrono::high_resolution_clock>, int>> vtp;
 
 
@@ -184,11 +183,6 @@ void add_tic(int lbl)
 	vtp.emplace_back(std::chrono::high_resolution_clock::now(), lbl);
 }
 
-/*
-void add_tic(int cazz)
-{
-	std::cerr << "cazz " << cazz;
-}*/
 
 #define ADD_TIC add_tic(__LINE__);
 
@@ -205,6 +199,7 @@ void tictoc_results()
 	}
 	std::cout << std::endl;
 }
+// ~  Performance Tester  ~ END ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
 
 
 int main(int argc, char ** argv)
