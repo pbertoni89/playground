@@ -1,35 +1,40 @@
-#include "tbb/parallel_for.h"
-using namespace tbb;
-
 /**************************************************************************************************
 
 This example defines a routine ParallelAverage that sets output[i]
 to the average of input[i-1], input[i], and input[i+1], for 1 <= i< n.
 
 ***************************************************************************************************/
+
+#include "tbb/parallel_for.h"
 #include "tbb/blocked_range.h"
 
-struct Average
+
+struct t_3pt_average
 {
-	const float* input;
+	const float * input;
 
-	float* output;
+	float * output;
 
-	void operator()(const blocked_range<int>& range) const
+	void operator()(const tbb::blocked_range<int> & range) const
 	{
 		for (int i = range.begin(); i != range.end(); ++i)
+		{
 			output[i] = (input[i - 1] + input[i] + input[i + 1])*(1 / 3.f);
+		}
 	}
 };
 
-// Note: Reads input[0..n] and writes output[1..n-1]. 
-void ParallelAverage(float* output, const float* input, size_t n)
+
+void parallel_average(float * output, const float * input, size_t n)
 {
-	Average avg;
+	t_3pt_average avg;
 	avg.input = input;
 	avg.output = output;
-	parallel_for(blocked_range<int>(1, (int)n), avg);
+	tbb::parallel_for(tbb::blocked_range<int>(1, (int)n), avg);
 }
+
+
+
 
 /**************************************************************************************************
 
@@ -50,20 +55,33 @@ The algorithm(Akl 1987) works recursively as follows :
 	5) Merge[begin1, m1) and [begin2, m2) to create the first part of the merged sequence.
 	6) Merge[m1, end1) and [m2, end2) to create the second part of the merged sequence.
 
-	The Intel® Threading Building Blocks implementation of this algorithm uses the range object
+	The Intel Threading Building Blocks implementation of this algorithm uses the range object
 	to perform most of the steps.Predicate is_divisible performs the test in step 1, and step 2.
 	The splitting constructor does steps 3 - 6. The body object does the sequential merges.
 
 ***************************************************************************************************/
 #include <algorithm>
 
-template<typename Iterator>
-struct ParallelMergeRange
+
+template<typename It>
+struct par_merge_range
 {
 	static size_t grainsize;
-	Iterator begin1, end1; // [begin1,end1) is 1st sequence to be merged
-	Iterator begin2, end2; // [begin2,end2) is 2nd sequence to be merged
-	Iterator out;               // where to put merged sequence
+
+	/**
+	 * [begin1,end1) is 1st sequence to be merged
+	 */
+	It begin1, end1;
+
+	/**
+	 * [begin2,end2) is 2nd sequence to be merged
+	 */
+	It begin2, end2; // 
+
+	/**
+	 * where to put merged sequence
+	 */
+	It out;          // 
 
 	bool empty() const
 	{
@@ -75,15 +93,15 @@ struct ParallelMergeRange
 		return std::min(end1 - begin1, end2 - begin2) > grainsize;
 	}
 
-	ParallelMergeRange(ParallelMergeRange& r, split)
+	par_merge_range(par_merge_range & r, tbb::split)
 	{
 		if (r.end1 - r.begin1 < r.end2 - r.begin2)
 		{
 			std::swap(r.begin1, r.begin2);
 			std::swap(r.end1, r.end2);
 		}
-		Iterator m1 = r.begin1 + (r.end1 - r.begin1) / 2;
-		Iterator m2 = std::lower_bound(r.begin2, r.end2, *m1);
+		It m1 = r.begin1 + (r.end1 - r.begin1) / 2;
+		It m2 = std::lower_bound(r.begin2, r.end2, *m1);
 		begin1 = m1;
 		begin2 = m2;
 		end1 = r.end1;
@@ -93,32 +111,35 @@ struct ParallelMergeRange
 		r.end2 = m2;
 	}
 
-	ParallelMergeRange(Iterator begin1_, Iterator end1_,
-		Iterator begin2_, Iterator end2_,
-		Iterator out_) :
+	par_merge_range(It begin1_, It end1_,
+		It begin2_, It end2_,
+		It out_) :
 		begin1(begin1_), end1(end1_),
 		begin2(begin2_), end2(end2_), out(out_)
 	{}
 };
 
-template<typename Iterator>
-size_t ParallelMergeRange<Iterator>::grainsize = 1000;
 
 template<typename Iterator>
-struct ParallelMergeBody
+size_t par_merge_range<Iterator>::grainsize = 1000;
+
+
+template<typename Iterator>
+struct par_merge_body
 {
-	void operator()(ParallelMergeRange<Iterator>& r) const
+	void operator()(par_merge_range<Iterator>& r) const
 	{
 		std::merge(r.begin1, r.end1, r.begin2, r.end2, r.out);
 	}
 };
 
+
 template<typename Iterator>
 void ParallelMerge(Iterator begin1, Iterator end1, Iterator begin2, Iterator end2, Iterator out)
 {
-	parallel_for(
-		ParallelMergeRange<Iterator>(begin1, end1, begin2, end2, out),
-		ParallelMergeBody<Iterator>(),
-		simple_partitioner()
+	tbb::parallel_for(
+		par_merge_range<Iterator>(begin1, end1, begin2, end2, out),
+		par_merge_body<Iterator>(),
+		tbb::simple_partitioner()
 		);
 }

@@ -124,3 +124,5 @@ UpgradeLog*
 /OpenCvGaussianModeling/dist/
 /OpenCvMorphologicalOps/build/
 /OpenCvMorphologicalOps/dist/
+/cxx/Tbb Playground/build/
+/cxx/Tbb Playground/dist/
