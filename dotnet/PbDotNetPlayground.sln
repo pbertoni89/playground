@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cancellation Token", "PbCsPlayground\Cancellation Token.csproj", "{E9E8BCC2-93C8-4BCD-8EE4-1D74654BE71C}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Redirect Stdin Stdout", "RedirectStdinStdout\Redirect Stdin Stdout.vbproj", "{C30FA324-B78A-43A4-8201-45D6F18C3398}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9E8BCC2-93C8-4BCD-8EE4-1D74654BE71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E8BCC2-93C8-4BCD-8EE4-1D74654BE71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E8BCC2-93C8-4BCD-8EE4-1D74654BE71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E8BCC2-93C8-4BCD-8EE4-1D74654BE71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C30FA324-B78A-43A4-8201-45D6F18C3398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30FA324-B78A-43A4-8201-45D6F18C3398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30FA324-B78A-43A4-8201-45D6F18C3398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30FA324-B78A-43A4-8201-45D6F18C3398}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {798EDC9D-BCC9-4A89-8680-8C8DC0E8DA3D}
+	EndGlobalSection
+EndGlobal

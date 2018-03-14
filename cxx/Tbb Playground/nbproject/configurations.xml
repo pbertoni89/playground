@@ -20,6 +20,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>IntelExamples.cpp</itemPath>
+      <itemPath>MonteCarlo.cpp</itemPath>
       <itemPath>NumberPrinter.cpp</itemPath>
       <itemPath>PseudoProducer.cpp</itemPath>
       <itemPath>Tasks.cpp</itemPath>
@@ -63,6 +64,8 @@
       <item path="IntelExamples.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="IntelExamples.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MonteCarlo.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NumberPrinter.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -121,6 +124,8 @@
       <item path="IntelExamples.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="IntelExamples.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MonteCarlo.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NumberPrinter.cpp" ex="false" tool="1" flavor2="0">
       </item>

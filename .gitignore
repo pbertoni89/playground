@@ -126,3 +126,5 @@ UpgradeLog*
 /OpenCvMorphologicalOps/dist/
 /cxx/Tbb Playground/build/
 /cxx/Tbb Playground/dist/
+/cxx/MonteCarlo/build/
+/cxx/MonteCarlo/dist/

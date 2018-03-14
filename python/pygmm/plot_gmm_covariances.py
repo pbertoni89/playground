@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Author: Ron Weiss <ronweiss@gmail.com>, Gael Varoquaux
 # Modified by Thierry Guillemot <thierry.guillemot.work@gmail.com>
