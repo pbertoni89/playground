@@ -130,3 +130,6 @@ UpgradeLog*
 /cxx/MonteCarlo/dist/
 /cxx/GiantuCalc/build/
 /cxx/GiantuCalc/dist/
+/cxx/cxx11/parallel_for/build/
+/cxx/Tbb Primes/build/
+/cxx/Tbb Primes/dist/

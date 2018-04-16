@@ -14,6 +14,13 @@ t_tp tic();
 double toc(t_tp tic);
 
 /**
+ * @param _tic
+ * @param _toc
+ * @return elapsed seconds
+ */
+double tictoc(t_tp _tic, t_tp _toc);
+
+/**
  * 
  * @param tic
  * @param lbl

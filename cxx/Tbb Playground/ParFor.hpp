@@ -6,11 +6,16 @@
 #include <sstream>
 
 
+void example_parallel_for_explore();
+
+
+typedef struct t_perf
+{
+	double time_par, time_ser;
+} t_perf;
+
 
 /**
- * Once you have the loop body written as a body object,
- * invoke the template function parallel_for, as follows
- * 
  * The blocked_range constructed here represents the entire iteration space from 0 to n-1,
  * which parallel_for divides into subspaces for each processor.
  * The general form of the constructor is blocked_range<T>(begin,end,grainsize).
@@ -19,8 +24,35 @@
  * The argument grainsize is explained in the Controlling Chunking section.
  * The example uses the default grainsize of 1 because by default parallel_for applies a heuristic
  * that works well with the default grainsize.
+ *
+ * @param DIM the vector size
+ *
+ * @param The grainsize sets a minimum threshold for parallelization.
+ * The parallel_for in the example invokes ApplyFoo::operator() on chunks,
+ * possibly of different sizes. Let chunksize be the number of iterations in a chunk.
+ * Using simple_partitioner guarantees that ⌈G/2⌉ ≤ chunksize ≤ G.
  */
-void sample_parallel_for(float a[], size_t n);
+t_perf example_parallel_for(size_t DIM, size_t GRAINSIZE);
+
+
+/**
+ * A logarithmic unary operation
+ *
+ * @template T is the arithmetic type
+ * @template Op is the unary operation from T to T
+ */
+template <typename T, T (* Op)(T)>
+class ParOp
+{
+public:
+	ParOp()
+	{}
+
+	T operator() (T arg) const
+	{
+		return Op(arg);
+	}
+};
 
 /*
  * The iteration space here is of type size_t, and goes from 0 to n-1.
@@ -30,51 +62,25 @@ void sample_parallel_for(float a[], size_t n);
  * The form is an STL-style function object, called the body object, in which operator() processes a chunk.
  * The following code declares the body object.
  */
-class FooTask
+class ParForLogTask
 {
-	struct foo_struct
-	{
-		int a;
-	};
+	/**
+	 * Reference to read-only input
+	 */
+	const std::vector<float> & m_in;
 
 	/**
-	 * An instance needs member fields that remember all the local variables
-	 * that were defined outside the original loop but used inside it.
+	 * Substitute with template TemplateOp
 	 */
-
-	/**
-	 * Read-only data structure
-	 */
-	float * const _pInput;
-
-	/**
-	 * Write-only
-	 */
-	float * _pOutput;
-
-	/**
-	 * This is a real object: it cannot be modified
-	 */
-	int _iCounterNotModifyable;
-
-	/**
-	 * This is just a pointer to something: it can !
-	 */
-	int * _piCounterModifyable;
-
-	/**
-	 * This is just a pointer to something: it can !
-	 */
-	foo_struct * _pFooStruct;
+	const ParOp<float, std::log2> _OP;
 	
 public:
 
 	/**
-	 * Actual parallel method
+	 * Reference to write output. Using local object is dangerous (at a certain
+	 * point after usage, they are all equal to 0). See operator() doc
 	 */
-	void read(float a, int pos) const;
-
-	void write(float a, int pos);
+	std::vector<float> & m_out;
 
 	/**
 	 * TBB operator override which contains the ACTUAL PARALLELIZED CYCLE.
@@ -95,7 +101,7 @@ public:
 	 * 	- Performance. Sometimes putting frequently accessed values into local variables helps the compiler
 	 * 	optimize the loop better, because local variables are often easier for the compiler to track.
 	 */
-	void operator()(const tbb::blocked_range<size_t> & r) const;
+	void operator()(const tbb::blocked_range<size_t> & range) const;
 
 	/**
 	 * Usually, the constructor for the body object will initialize instance attributes,
@@ -107,12 +113,5 @@ public:
 	 * In most cases, the implicitly generated copy constructor and destructor work correctly.
 	 * If they do not, it is almost always the case (as usual in C++) that you must define both to be consistent.
 	 */
-	FooTask(float a[]);
-
-	~FooTask();
-
-	/**
-	 * Experimental workaround to reduce dtor parallelism
-	 */
-	void meta_destructor();
+	ParForLogTask(const std::vector<float> & v_in, std::vector<float> & v_out);
 };

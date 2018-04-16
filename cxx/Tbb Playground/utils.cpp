@@ -9,9 +9,14 @@ t_tp tic()
 }
 
 
-double toc(t_tp tic1)
+double toc(t_tp _tic)
 {
-	return (1.e-9) * std::chrono::duration_cast<std::chrono::nanoseconds>(tic() - tic1).count();
+	return tictoc(_tic, tic());
+}
+
+double tictoc(t_tp _tic, t_tp _toc)
+{
+	return (1.e-9) * std::chrono::duration_cast<std::chrono::nanoseconds>(_toc - _tic).count();
 }
 
 

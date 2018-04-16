@@ -1,8 +1,9 @@
 #include <tbb/tbb.h>
 
-#include "PseudoProducer.hpp"
+#include "ParFor.hpp"
 #include "Tasks.hpp"
 #include "NumberPrinter.hpp"
+#include "ParReduce.hpp"
 #include "ThreadPool.hpp"
 #include "utils.hpp"
 
@@ -16,22 +17,22 @@
 /**
  * http://www.mupuf.org/blog/2011/11/13/parallel_programming_hello_world_with_intel_tbb
  */
-//#define EXAMPLE_PARALLEL_REDUCE
+#define EXAMPLE_PARALLEL_REDUCE
 
 /**
  * https://software.intel.com/en-us/node/506057
  */
-//#define EXAMPLE_PARALLEL_FOR
+// #define EXAMPLE_PARALLEL_FOR
 
 /**
  * 
  */
-#define EXAMPLE_THREAD_POOL
+// #define EXAMPLE_THREAD_POOL
 
 /**
  * https://www.threadingbuildingblocks.org/tutorial-intel-tbb-task-based-programming/
  */
-#define EXAMPLE_TASKS
+// #define EXAMPLE_TASKS
 
 
 // --------------------------------------------------------------------------------------------------------
@@ -40,12 +41,10 @@
 int main()
 {
 	long N = 0;
-	std::cout << "Insert Fibonacci argument: ";
+	std::cout << "Insert Parallel Size (Fibonacci Arg, Vector Length): ";
 	std::cin >> N;
 
-	const auto t0 = tic();
-	const long FN = fibonacci_serial(N);
-	toclabel(t0, "SERIAL");
+
 
 #ifdef EXAMPLE_THREAD_POOL
 	ThreadPoolExample tp;
@@ -72,29 +71,32 @@ int main()
 
 
 #ifdef EXAMPLE_PARALLEL_REDUCE
-	sample_parallel_reduce(1000);
+	example_parallel_reduce_number_printer(N);
+	example_parallel_reduce_simple(N);
 #endif
 
 
 #ifdef EXAMPLE_PARALLEL_FOR
-	#define ARRSZ 4
-	float arr[ARRSZ] = { 1.2, 3.1, 4.2, 0.9 };
-	sample_parallel_for(arr, ARRSZ);
+	std::cout << "  ~  ~   ~  ~   ~ PARALLEL FOR ~   ~  ~   ~  ~   ~  ~   ~  ~ " << std::endl;
+	example_parallel_for_explore();
+	size_t GRAIN;
+	std::cout << "Insert Grain Size: ";
+	std::cin >> GRAIN;
+	example_parallel_for(N, GRAIN);
 #endif
 
 
 #ifdef EXAMPLE_TASKS
-		const auto t1 = tic();
-
+	std::cout << "  ~  ~   ~  ~   ~ TASKS  ~   ~  ~   ~  ~   ~  ~   ~  ~ " << std::endl;
+													const auto t0 = tic();
+	const long FN = fibonacci_serial(N);
+													toclabel(t0, "SERIAL");
+													const auto t1 = tic();
 	const long F2 = fibonacci_task(N);
-
-		toclabel(t1, "TASKS ");
-		const auto t2 = tic();
-
+													toclabel(t1, "TASKS ");
+													const auto t2 = tic();
 	const long F3 = fibonacci_task_tree(N);
-
-		toclabel(t2, "TASKTR");
-
+													toclabel(t2, "TASKTR");
 	if (FN != F2 || F2 != F3)
 	{
 		throw std::runtime_error("Fibonacci was wrong");

@@ -4,6 +4,9 @@
 #include "tbb/task_group.h"
 #include "tbb/tick_count.h"
 
+#include <iostream>
+
+#if 0
 
 class PiCalculator {
 public:
@@ -16,7 +19,8 @@ public:
 	   in = 0; // make sure to initialize to zero.
 	}
 
-	void operator()() {
+	void operator()()
+	{
 	const int block_size = 2048;
 	double variates[2 * block_size];
 	int nblocks, ntail, i, j;
@@ -62,15 +66,13 @@ int main() {
 
 	VSLStreamStatePtr stream[tasks];
 
-	for (int i = 0; i < tasks; i++) {
-
-	errorcode = vslNewStream(&stream[i], VSL_BRNG_MCG59, seed);
-
-	if (errorcode) {
-
-	return 1;
-
-	}
+	for (int i = 0; i < tasks; i++)
+	{
+		errorcode = vslNewStream(&stream[i], VSL_BRNG_MCG59, seed);
+		if (errorcode)
+		{
+			return 1;
+		}
 
 	errorcode = vslLeapfrogStream(stream[i], i, tasks);
 
@@ -82,39 +84,37 @@ int main() {
 
 	tbb::task_scheduler_init init;
 
-tbb::task_group group;
+	tbb::task_group group;
 
-long results[tasks];
+	long results[tasks];
 
-long samplesPerTasks = samples/tasks;
+	long samplesPerTasks = samples/tasks;
 
-tbb::tick_count t0 = tbb::tick_count::now();
+	tbb::tick_count t0 = tbb::tick_count::now();
 
-for (int i = 0; i < tasks; i++) {
+	for (int i = 0; i < tasks; i++)
+	{
+		group.run(PiCalculator(samplesPerTasks, results[i], stream[i]));
+	}
 
-group.run(PiCalculator(samplesPerTasks, results[i], stream[i]));
+	group.wait();
 
+	tbb::tick_count t1 = tbb::tick_count::now();
+
+	long result = 0;
+
+	for(int i=0;i<tasks;i++)
+	{
+		result += results[i];
+	}
+
+	std::cout << "pi = " << 4.0 * result / samples << std::endl;
+
+	std::cout << "time [s]: " << (t1-t0).seconds();
+
+	for (int i = 0; i < tasks; i++)
+		vslDeleteStream(&stream[i]);
+
+	return 0;
 }
-
-group.wait();
-
-tbb::tick_count t1 = tbb::tick_count::now();
-
-long result = 0;
-
-for(int i=0;i
-
-result += results[i];
-
-}
-
-std::cout << "pi = " << 4.0 * result / samples << std::endl;
-
-std::cout << "time [s]: " << (t1-t0).seconds();
-
-for (int i = 0; i < tasks; i++)
-
-vslDeleteStream(&stream[i]);
-
-return 0;
-}
+#endif
