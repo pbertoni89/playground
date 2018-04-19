@@ -20,12 +20,20 @@
 #include <cmath>
 
 
-enum class e_exec_mode
-{
-	RUN_ALL_THEN_WAIT,
-	RUN_WAIT,
-	THREADS
-};
+/**
+ * https://www.threadingbuildingblocks.org/tutorial-intel-tbb-task-based-programming
+ * @param n
+ * @return fib(n)
+ */
+long fibonacci_task_tree(long n);
+
+/**
+ * https://software.intel.com/en-us/node/506102
+ * https://stackoverflow.com/questions/48811399/tbb-task-scheduling-whats-the-point-of-this-example
+ * @param n
+ * @return fib(n) 
+ */
+long fibonacci_task(long n);
 
 
 /**
@@ -34,13 +42,27 @@ enum class e_exec_mode
  * If creating more than a small number of concurrent tasks,
  * consider using parallel_for or parallel_invoke instead, or structure the spawning as a recursive tree
  */
-class ThreadPoolExample
+class FibThreadPool
 {
 	tbb::task_scheduler_init m_scheduler;
 
 	tbb::task_group m_group;
 
 public:
+
+	enum class e_exec_mode
+	{
+		/**
+		 */
+		RUN_ALL_THEN_WAIT,
+		/**
+		 * Never use: only for edu purposes
+		 */
+		RUN_WAIT,
+		/**
+		 */
+		THREADS
+	};
 
 	/**
 	 * Should not (only for printing purposes)
@@ -50,7 +72,7 @@ public:
 	/**
 	 * Initialize the m_scheduler with N_THREADS_IN_POOL
 	 */
-	ThreadPoolExample();
+	FibThreadPool();
 
 	/**
 	 * @param mode

@@ -70,22 +70,29 @@ void example_parallel_reduce_simple(int n)
 	x = tbb::cache_aligned_allocator<float>().allocate(n + 1);
 	y = tbb::cache_aligned_allocator<float>().allocate(n + 1);
 
-	std::cout << "\nI";
-	for (int i=0; i<n; i++)
-	{
-		std::cout << "\t" << i;
-	}
-	std::cout << "\nX";
 	for (int i=0; i<n; i++)
 	{
 		x[i] = rand() % 50;
-		std::cout << "\t" << x[i];
-	}
-	std::cout << "\nY";
-	for (int i=0; i<n; i++)
-	{
 		y[i] = rand() % 50 + 50;
-		std::cout << "\t" << y[i];
+	}
+
+	if (n <= 20)
+	{
+		std::cout << "\nI";
+		for (int i=0; i<n; i++)
+		{
+			std::cout << "\t" << i;
+		}
+		std::cout << "\nX";
+		for (int i=0; i<n; i++)
+		{
+			std::cout << "\t" << x[i];
+		}
+		std::cout << "\nY";
+		for (int i=0; i<n; i++)
+		{
+			std::cout << "\t" << y[i];
+		}
 	}
 
 	t_reduce_op reduceOp(x, y);
@@ -93,12 +100,15 @@ void example_parallel_reduce_simple(int n)
 	// rules for partitioners and grain sizes for parallel_reduce are the same as for parallel_for
 	tbb::parallel_reduce(tbb::blocked_range<int>(0, n, 1024), reduceOp);
 
-	std::cout << "\nZ";
-	for (int i=0; i<n; i++)
+	if (n <= 20)
 	{
-		std::cout << "\t" << x[i];
+		std::cout << "\nZ";
+		for (int i=0; i<n; i++)
+		{
+			std::cout << "\t" << x[i];
+		}
 	}
-	std::cout << "\ne = " << reduceOp.m_sum << std::endl;
+	std::cout << "\nReduce: e = " << reduceOp.m_sum << std::endl;
 
 	tbb::cache_aligned_allocator<float>().deallocate(x, n + 1);
 	tbb::cache_aligned_allocator<float>().deallocate(y, n + 1);

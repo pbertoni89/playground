@@ -13,7 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.cpp</itemPath>
+      <itemPath>main_primes.cpp</itemPath>
       <itemPath>primes.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -47,7 +47,7 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="main_primes.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="primes.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -81,7 +81,7 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="main_primes.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="primes.cpp" ex="false" tool="1" flavor2="0">
       </item>

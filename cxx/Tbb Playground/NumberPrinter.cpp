@@ -38,7 +38,7 @@ public:
 	 * It then creates a copy of one of the class instances, and distributes the data evenly among them
 	 * (this is entirely transparent for the user, and it's one of the many things that makes Intel TBB so cool)
 	*/
-	NumberPrinter(NumberPrinter & other, tbb::split);
+	NumberPrinter(const NumberPrinter & other, tbb::split);
 
 	/**
 	 * There are two constructors defined: These just match the requirements of Intel TBB to make the class run
@@ -70,6 +70,8 @@ void example_parallel_reduce_number_printer(int n)
 }
 
 
+//   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~
+
 
 char * NumberPrinter::develop(size_t i)
 {
@@ -81,7 +83,7 @@ char * NumberPrinter::develop(size_t i)
 
 	// will mess up buffer between i and std::endl
 	//std::cerr << i << std::endl;
-	fprintf(stderr, "%zu malloc %zu\n", i, to_malloc);
+	fprintf(stderr, "NumPrinter %zu malloc %zu\n", i, to_malloc);
 /*
 	char printmsg[100];
 	//sprintf(printmsg, "%Iu\t%Iu\t%p\n", i, to_malloc, foo);
@@ -107,11 +109,11 @@ void NumberPrinter::operator()(const tbb::blocked_range<size_t> & BLOCKED_RANGE)
 }
 
 
-NumberPrinter::NumberPrinter(NumberPrinter & x, tbb::split)
+NumberPrinter::NumberPrinter(const NumberPrinter & OTHER, tbb::split)
 {}
 
 
-void NumberPrinter::join(const NumberPrinter& OTHER)
+void NumberPrinter::join(const NumberPrinter & OTHER)
 {
 	m_vcOutput.reserve(m_vcOutput.size() + OTHER.m_vcOutput.size());
 
@@ -119,6 +121,4 @@ void NumberPrinter::join(const NumberPrinter& OTHER)
 	{
 		m_vcOutput.push_back(OTHER.m_vcOutput.at(i));
 	}
-
-	// my_vect.insert(my_vect.end(), y.my_vect.begin(), y.my_vect.end());
 }

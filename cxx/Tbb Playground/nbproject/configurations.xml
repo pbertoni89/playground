@@ -4,12 +4,10 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Fibonacci.hpp</itemPath>
       <itemPath>IntelExamples.hpp</itemPath>
       <itemPath>ParFor.hpp</itemPath>
       <itemPath>ParReduce.hpp</itemPath>
-      <itemPath>SimpleThreading.hpp</itemPath>
-      <itemPath>Tasks.hpp</itemPath>
-      <itemPath>ThreadPool.hpp</itemPath>
       <itemPath>utils.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -19,6 +17,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f2" displayName="fib" projectFiles="true">
+        <itemPath>Tasks.cpp</itemPath>
+        <itemPath>ThreadPool.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f1" displayName="par_reduce" projectFiles="true">
         <itemPath>MinValue.cpp</itemPath>
         <itemPath>NumberPrinter.cpp</itemPath>
@@ -27,9 +29,7 @@
       <itemPath>IntelExamples.cpp</itemPath>
       <itemPath>MonteCarlo.cpp</itemPath>
       <itemPath>ParFor.cpp</itemPath>
-      <itemPath>Tasks.cpp</itemPath>
-      <itemPath>ThreadPool.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
+      <itemPath>main_tbbground.cpp</itemPath>
       <itemPath>utils.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -67,6 +67,8 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="Fibonacci.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="IntelExamples.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="IntelExamples.hpp" ex="false" tool="3" flavor2="0">
@@ -85,17 +87,11 @@
       </item>
       <item path="ParReduceSimple.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="SimpleThreading.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Tasks.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tasks.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ThreadPool.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ThreadPool.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="main_tbbground.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -131,6 +127,8 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="Fibonacci.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="IntelExamples.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="IntelExamples.hpp" ex="false" tool="3" flavor2="0">
@@ -149,17 +147,11 @@
       </item>
       <item path="ParReduceSimple.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="SimpleThreading.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Tasks.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tasks.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ThreadPool.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ThreadPool.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="main_tbbground.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>

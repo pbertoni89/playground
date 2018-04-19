@@ -1,9 +1,10 @@
-#include "Tasks.hpp"
+#include "Fibonacci.hpp"
 
 #include "utils.hpp"
 
 #include <tbb/task_group.h>
 #include <tbb/task.h>
+
 
 // #define DBG_TBB
 
@@ -21,20 +22,34 @@
 	using t_lk = std::lock_guard<std::mutex>;
 #endif
 
+
+/**
+ * Block parallel execution
+ */
+const int FIB_CUTOFF = 16;
+
+
 long fibonacci_task_tree(long n)
 {
-	if (n<2)
+	if (n < 2)
 	{
 		return n;
 	}
 	else
 	{
-		long x, y;
-		tbb::task_group g;
-		g.run([&] {x = fibonacci_task_tree(n - 1); });	// spawn a task
-		g.run([&] {y = fibonacci_task_tree(n - 2); });	// spawn another task
-		g.wait();										// wait for both tasks to complete
-		return x + y;
+		if (n < FIB_CUTOFF)
+		{
+			return fibonacci_serial(n);
+		}
+		else
+		{
+			long x, y;
+			tbb::task_group g;
+			g.run([&] {x = fibonacci_task_tree(n - 1); });	// spawn a task
+			g.run([&] {y = fibonacci_task_tree(n - 2); });	// spawn another task
+			g.wait();										// wait for both tasks to complete
+			return x + y;
+		}
 	}
 }
 
@@ -42,24 +57,39 @@ long fibonacci_task_tree(long n)
 class FibTask :
 	public tbb::task
 {
+	/**
+	 * Argument of this task
+	 */
 	const long m_n;
 
+	/**
+	 * Reduction variable
+	 */
 	long * const m_sum;
 
 	/**
-	 * Call depth
+	 * Call depth - only for logging purposes
 	 */
 	int m_lvl;
 
 	/**
-	 * Format output
+	 * Format output - only for logging purposes
 	 */
 	std::string m_tabs;
 
 public:
 
+	/**
+	 * Format output - only for logging purposes
+	 */
 	static int __id;
 
+	/**
+	 * Construct a new derived tbb Task
+	 * @param n
+	 * @param sum
+	 * @param lvl
+	 */
 	FibTask(long n, long * sum, int lvl = 0) :
 		m_n(n), m_sum(sum), m_lvl(lvl), m_tabs("")
 	{
@@ -84,14 +114,22 @@ public:
 
 	/**
 	 * Overrides virtual function task::execute
+	 *
+	 * At first glance, the parallelism might appear to be limited, because the
+	 * task creates only two child tasks. The trick here is recursive parallelism.
+	 * The two child tasks each create two child tasks, and so on,
+	 * until n <lt> Cutoff. This chain reaction creates a lot of potential parallelism.
+	 *
+	 * The advantage of the task scheduler is that it turns this potential parallelism
+	 * into real parallelism in a very efficient way, because it chooses tasks
+	 * to run in a way that keeps physical threads busy with relatively little context switching.
+	 *
 	 * @return either NULL, or a pointer to the next task to run.
 	 * For more information on the non-NULL case see Scheduler Bypass.
 	 */
 	task* execute()
 	{
-		static const int CUTOFF = 3;
-
-		if (m_n < CUTOFF)
+		if (m_n < FIB_CUTOFF)
 		{
 			*m_sum = fibonacci_serial(m_n);
 #ifdef DBG_TBB
@@ -119,7 +157,10 @@ public:
 				std::cout << m_tabs << "F(" << m_n << ") -> F(" << (m_n-1) << "), F(" << (m_n-2) << ")" << std::endl;
 			}
 #endif
-			// Set ref_count to 'two children plus one for the wait"
+			/*
+			 * Set ref_count to 'two children plus one for the wait'
+			 * this protects the successor from being implicitly pushed
+			 */
 			set_ref_count(3);
 
 			// Start b running; return immediately

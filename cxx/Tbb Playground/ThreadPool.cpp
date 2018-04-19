@@ -1,4 +1,4 @@
-#include "ThreadPool.hpp"
+#include "Fibonacci.hpp"
 
 #include "utils.hpp"
 
@@ -22,7 +22,7 @@ public:
 
 		m_iFibStart = fibStart;
 #ifdef DEBUG_TP
-		m_szSpaces = __iTotalTasksRun % ThreadPoolExample::N_THREADS_IN_POOL;
+		m_szSpaces = __iTotalTasksRun % FibThreadPool::N_THREADS_IN_POOL;
 
 		for (int i = 0; i < m_szSpaces; i++)
 		{
@@ -54,12 +54,12 @@ public:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-ThreadPoolExample::ThreadPoolExample() :
+FibThreadPool::FibThreadPool() :
 	m_scheduler(N_THREADS_IN_POOL)
 {}
 
 
-void ThreadPoolExample::test(e_exec_mode mode, long N)
+void FibThreadPool::test(e_exec_mode mode, long N)
 {
 					const std::string STR_MODE = (mode == e_exec_mode::RUN_WAIT ? "WAIT  " : (mode == e_exec_mode::RUN_ALL_THEN_WAIT ? "ALL   " : "THRD  "));
 					const auto t0 = tic();
@@ -77,7 +77,7 @@ void ThreadPoolExample::test(e_exec_mode mode, long N)
 			m_group.run(FibFunctor(fibArg));
 			break;
 		case e_exec_mode::THREADS:
-			vt.push_back(std::thread(fibonacci_serial, fibArg));
+			vt.emplace_back(fibonacci_serial, fibArg);
 			break;
 		}
 #ifdef DEBUG_TP
