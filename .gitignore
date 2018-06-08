@@ -133,3 +133,7 @@ UpgradeLog*
 /cxx/cxx11/parallel_for/build/
 /cxx/Tbb Primes/build/
 /cxx/Tbb Primes/dist/
+/cxx/boost/JsonPropertyTree/build/
+/cxx/boost/JsonPropertyTree/dist/
+/cxx/boost/Boost Sparse Matrix/build/
+/cxx/boost/Boost Sparse Matrix/dist/
