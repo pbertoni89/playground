@@ -1,0 +1,1537 @@
+Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: CRED
+
+Terms added sequentially (first to last)
+
+
+     Df Deviance Resid. Df Resid. Dev  Pr(>Chi)    
+NULL                   999    1221.73              
+BAL   3  131.336       996    1090.39 < 2.2e-16 ***
+DCM   1   38.497       995    1051.90 5.485e-10 ***
+PSPC  4   29.311       991    1022.58 6.759e-06 ***
+PURP  9   33.509       982     989.08 0.0001089 ***
+CRAM  1    1.505       981     987.57 0.2199727    
+VSST  4   19.068       977     968.50 0.0007623 ***
+EMPL  4   12.496       973     956.01 0.0140188 *  
+INST  3   11.914       970     944.09 0.0076823 ** 
+SEX   3    9.487       967     934.61 0.0234659 *  
+GUAR  2    8.109       965     926.50 0.0173399 *  
+ADDR  3    7.349       962     919.15 0.0615704 .  
+MVAA  3    2.847       959     916.30 0.4157671    
+AGE   1    3.205       958     913.10 0.0734348 .  
+CCR   2    3.057       956     910.04 0.2168555    
+APA   2    3.789       954     906.25 0.1504253    
+BACR  3    3.372       951     902.88 0.3377243    
+OCC   3    1.145       948     901.73 0.7662767    
+NDEP  1    0.979       947     900.75 0.3223291    
+TEL   1    1.573       946     899.18 0.2098032    
+FORE  1    6.224       945     892.96 0.0126065 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: CRED
+
+Terms added sequentially (first to last)
+
+
+     Df Deviance Resid. Df Resid. Dev  Pr(>Chi)    
+NULL                   999    1221.73              
+BAL   3  131.336       996    1090.39 < 2.2e-16 ***
+DCM   2   30.673       994    1059.72 2.185e-07 ***
+PSPC  4   31.695       990    1028.02 2.208e-06 ***
+PURP  9   32.877       981     995.15 0.0001403 ***
+CRAM  2    4.529       979     990.62 0.1039068    
+VSST  4   18.684       975     971.93 0.0009065 ***
+EMPL  4   10.203       971     961.73 0.0371400 *  
+INST  3    6.885       968     954.85 0.0756504 .  
+SEX   3    6.779       965     948.07 0.0792913 .  
+GUAR  2   10.615       963     937.45 0.0049546 ** 
+ADDR  3    7.431       960     930.02 0.0593693 .  
+MVAA  3    5.759       957     924.26 0.1239464    
+AGE   2    4.651       955     919.61 0.0977256 .  
+CCR   2    2.967       953     916.65 0.2268502    
+APA   2    4.226       951     912.42 0.1208574    
+BACR  3    2.377       948     910.04 0.4979588    
+OCC   3    0.967       945     909.07 0.8091260    
+NDEP  1    0.984       944     908.09 0.3211798    
+TEL   1    0.338       943     907.75 0.5607764    
+FORE  1    5.165       942     902.59 0.0230517 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+  Bayesian network parameters
+
+  Parameters of node CRED (multinomial distribution)
+
+Conditional probability table:
+       BAD      GOOD 
+0.3019802 0.6980198 
+
+  Parameters of node BAL (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+BAL       BAD      GOOD
+  1 0.4467213 0.1989362
+  2 0.3483607 0.2343972
+  3 0.0500000 0.0712766
+  4 0.1549180 0.4953901
+
+  Parameters of node DCM (multinomial distribution)
+
+Conditional probability table:
+ 
+         CRED
+DCM             BAD      GOOD
+  [4,12]  0.2546448 0.4037825
+  (12,24] 0.4054645 0.4122931
+  (24,72] 0.3398907 0.1839243
+
+  Parameters of node PSPC (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+PSPC        BAD       GOOD
+   0 0.08524590 0.02269504
+   1 0.09508197 0.03120567
+   2 0.55737705 0.51347518
+   3 0.09508197 0.08652482
+   4 0.16721311 0.34609929
+
+  Parameters of node PURP (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+PURP         BAD        GOOD
+  0  0.293442623 0.206382979
+  1  0.057377049 0.122695035
+  10 0.018032787 0.010638298
+  2  0.191803279 0.175177305
+  3  0.204918033 0.309929078
+  4  0.014754098 0.012056738
+  5  0.027868852 0.020567376
+  6  0.073770492 0.040425532
+  8  0.004918033 0.012056738
+  9  0.113114754 0.090070922
+
+  Parameters of node CRAM (multinomial distribution)
+
+Conditional probability table:
+ 
+                     CRED
+CRAM                        BAD      GOOD
+  [250,1.55e+03]      0.3169399 0.3413712
+  (1.55e+03,3.37e+03] 0.2808743 0.3555556
+  (3.37e+03,1.84e+04] 0.4021858 0.3030733
+
+  Parameters of node VSST (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+VSST        BAD       GOOD
+   1 0.71475410 0.54893617
+   2 0.11475410 0.09929078
+   3 0.03934426 0.07517730
+   4 0.02295082 0.06099291
+   5 0.10819672 0.21560284
+
+  Parameters of node EMPL (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+EMPL        BAD       GOOD
+   1 0.07868852 0.05673759
+   2 0.23278689 0.14609929
+   3 0.34426230 0.33475177
+   4 0.13114754 0.19290780
+   5 0.21311475 0.26950355
+
+  Parameters of node INST (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+INST       BAD      GOOD
+   1 0.1155738 0.1464539
+   2 0.2073770 0.2414894
+   3 0.1516393 0.1606383
+   4 0.5254098 0.4514184
+
+  Parameters of node SEX (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+SEX        BAD       GOOD
+  1 0.06967213 0.04432624
+  2 0.36147541 0.28687943
+  3 0.48278689 0.57198582
+  4 0.08606557 0.09680851
+
+  Parameters of node GUAR (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+GUAR        BAD       GOOD
+   1 0.89726776 0.90307329
+   2 0.06448087 0.03498818
+   3 0.03825137 0.06193853
+
+  Parameters of node ADDR (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+ADDR       BAD      GOOD
+   1 0.1221311 0.1351064
+   2 0.3221311 0.3010638
+   3 0.1450820 0.1521277
+   4 0.4106557 0.4117021
+
+  Parameters of node MVAA (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+MVAA       BAD      GOOD
+   1 0.2008197 0.3166667
+   2 0.2368852 0.2301418
+   3 0.3385246 0.3280142
+   4 0.2237705 0.1251773
+
+  Parameters of node AGE (multinomial distribution)
+
+Conditional probability table:
+ 
+         CRED
+AGE             BAD      GOOD
+  [19,29] 0.4546448 0.3314421
+  (29,38] 0.2644809 0.3314421
+  (38,75] 0.2808743 0.3371158
+
+  Parameters of node CCR (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+CCR        BAD       GOOD
+  1 0.19234973 0.11867612
+  2 0.06775956 0.04208038
+  3 0.73989071 0.83924350
+
+  Parameters of node APA (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+APA        BAD       GOOD
+  1 0.23497268 0.15697400
+  2 0.61530055 0.75130024
+  3 0.14972678 0.09172577
+
+  Parameters of node BACR (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+BACR         BAD        GOOD
+   1 0.659836066 0.615957447
+   2 0.305737705 0.343617021
+   3 0.023770492 0.032978723
+   4 0.010655738 0.007446809
+
+  Parameters of node OCC (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+OCC        BAD       GOOD
+  1 0.02704918 0.02304965
+  2 0.18770492 0.20602837
+  3 0.61393443 0.63156028
+  4 0.17131148 0.13936170
+
+  Parameters of node NDEP (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+NDEP       BAD      GOOD
+   1 0.8409836 0.8418440
+   2 0.1590164 0.1581560
+
+  Parameters of node TEL (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+TEL       BAD      GOOD
+  1 0.6213115 0.5836879
+  2 0.3786885 0.4163121
+
+  Parameters of node FORE (multinomial distribution)
+
+Conditional probability table:
+ 
+    CRED
+FORE        BAD       GOOD
+   1 0.97868852 0.94964539
+   2 0.02131148 0.05035461
+
+     X1   X2     strength
+1  CRED  BAL -55.30632799
+2  CRED  DCM -10.73594405
+3  CRED PSPC -16.41804406
+4  CRED PURP  13.83001169
+5  CRED CRAM   1.77302102
+6  CRED VSST  -5.67209721
+7  CRED EMPL   4.73367263
+8  CRED INST   7.60836092
+9  CRED  SEX   5.64091957
+10 CRED GUAR   3.58271374
+11 CRED ADDR   9.98559971
+12 CRED MVAA  -1.41160082
+13 CRED  AGE  -0.09709551
+14 CRED  CCR   0.75602532
+15 CRED  APA  -2.15650400
+16 CRED BACR   8.99035816
+17 CRED  OCC   9.43464778
+18 CRED NDEP   3.44932531
+19 CRED  TEL   2.78591942
+20 CRED FORE  -0.58231216
+
+  Bayesian network parameters
+
+  Parameters of node CRED (multinomial distribution)
+
+Conditional probability table:
+       BAD      GOOD 
+0.3019802 0.6980198 
+
+  Parameters of node BAL (multinomial distribution)
+
+Conditional probability table:
+ 
+   CRED
+BAL       BAD      GOOD
+  1 0.4467213 0.1989362
+  2 0.3483607 0.2343972
+  3 0.0500000 0.0712766
+  4 0.1549180 0.4953901
+
+  Parameters of node DCM (multinomial distribution)
+
+Conditional probability table:
+ 
+, , CRAM = [250,1.55e+03]
+
+         CRED
+DCM               BAD        GOOD
+  [4,12]  0.564367816 0.687903970
+  (12,24] 0.429885057 0.305632502
+  (24,72] 0.005747126 0.006463527
+
+, , CRAM = (1.55e+03,3.37e+03]
+
+         CRED
+DCM               BAD        GOOD
+  [4,12]  0.134889754 0.365248227
+  (12,24] 0.578469520 0.524822695
+  (24,72] 0.286640726 0.109929078
+
+, , CRAM = (3.37e+03,1.84e+04]
+
+         CRED
+DCM               BAD        GOOD
+  [4,12]  0.094202899 0.128965159
+  (12,24] 0.265398551 0.400416017
+  (24,72] 0.640398551 0.470618825
+
+
+  Parameters of node PSPC (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.056983240 0.014432990
+   1 0.101675978 0.021305842
+   2 0.559776536 0.481786942
+   3 0.068156425 0.076288660
+   4 0.213407821 0.406185567
+
+, , PURP = 1
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.062857143 0.024277457
+   1 0.120000000 0.035838150
+   2 0.577142857 0.475144509
+   3 0.005714286 0.093641618
+   4 0.234285714 0.371098266
+
+, , PURP = 10
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.200000000 0.013333333
+   1 0.381818182 0.013333333
+   2 0.200000000 0.413333333
+   3 0.018181818 0.280000000
+   4 0.200000000 0.280000000
+
+, , PURP = 2
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.070085470 0.025101215
+   1 0.087179487 0.025101215
+   2 0.617094017 0.567611336
+   3 0.052991453 0.057489879
+   4 0.172649573 0.324696356
+
+, , PURP = 3
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.049600000 0.005034325
+   1 0.049600000 0.027917620
+   2 0.705600000 0.563386728
+   3 0.081600000 0.069107551
+   4 0.113600000 0.334553776
+
+, , PURP = 4
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.022222222 0.011764706
+   1 0.022222222 0.129411765
+   2 0.911111111 0.717647059
+   3 0.022222222 0.011764706
+   4 0.022222222 0.129411765
+
+, , PURP = 5
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.129411765 0.075862069
+   1 0.011764706 0.006896552
+   2 0.482352941 0.489655172
+   3 0.247058824 0.075862069
+   4 0.129411765 0.351724138
+
+, , PURP = 6
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.004444444 0.003508772
+   1 0.137777778 0.003508772
+   2 0.448888889 0.459649123
+   3 0.137777778 0.073684211
+   4 0.271111111 0.459649123
+
+, , PURP = 8
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.066666667 0.129411765
+   1 0.066666667 0.247058824
+   2 0.733333333 0.482352941
+   3 0.066666667 0.011764706
+   4 0.066666667 0.129411765
+
+, , PURP = 9
+
+    CRED
+PSPC         BAD        GOOD
+   0 0.292753623 0.080314961
+   1 0.118840580 0.048818898
+   2 0.263768116 0.379527559
+   3 0.263768116 0.222047244
+   4 0.060869565 0.269291339
+
+
+  Parameters of node PURP (multinomial distribution)
+
+Conditional probability table:
+ 
+, , BAL = 1
+
+    CRED
+PURP         BAD        GOOD
+  0  0.309174312 0.257575758
+  1  0.066972477 0.122103387
+  10 0.008256881 0.022281640
+  2  0.221100917 0.300356506
+  3  0.199082569 0.193404635
+  4  0.030275229 0.008021390
+  5  0.022935780 0.015151515
+  6  0.074311927 0.022281640
+  8  0.008256881 0.008021390
+  9  0.059633028 0.050802139
+
+, , BAL = 2
+
+    CRED
+PURP         BAD        GOOD
+  0  0.292941176 0.176248109
+  1  0.057647059 0.091527988
+  10 0.038823529 0.018910741
+  2  0.170588235 0.127836611
+  3  0.208235294 0.321482602
+  4  0.001176471 0.012859304
+  5  0.029411765 0.037065053
+  6  0.067058824 0.037065053
+  8  0.001176471 0.018910741
+  9  0.132941176 0.158093797
+
+, , BAL = 3
+
+    CRED
+PURP         BAD        GOOD
+  0  0.270491803 0.241293532
+  1  0.008196721 0.042288557
+  10 0.008196721 0.002487562
+  2  0.073770492 0.201492537
+  3  0.401639344 0.360696517
+  4  0.008196721 0.022388060
+  5  0.008196721 0.002487562
+  6  0.073770492 0.062189055
+  8  0.008196721 0.002487562
+  9  0.139344262 0.062189055
+
+, , BAL = 4
+
+    CRED
+PURP         BAD        GOOD
+  0  0.256613757 0.195060845
+  1  0.044973545 0.149248389
+  10 0.002645503 0.003221188
+  2  0.193121693 0.143521832
+  3  0.150793651 0.343951324
+  4  0.002645503 0.011811024
+  5  0.044973545 0.017537581
+  6  0.087301587 0.046170365
+  8  0.002645503 0.011811024
+  9  0.214285714 0.077666428
+
+
+  Parameters of node CRAM (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.49348231 0.42038946
+  (1.55e+03,3.37e+03] 0.19180633 0.29667812
+  (3.37e+03,1.84e+04] 0.31471136 0.28293242
+
+, , PURP = 1
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.00952381 0.08285164
+  (1.55e+03,3.37e+03] 0.00952381 0.31406551
+  (3.37e+03,1.84e+04] 0.98095238 0.60308285
+
+, , PURP = 10
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.21212121 0.15555556
+  (1.55e+03,3.37e+03] 0.03030303 0.28888889
+  (3.37e+03,1.84e+04] 0.75757576 0.55555556
+
+, , PURP = 2
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.15669516 0.22807018
+  (1.55e+03,3.37e+03] 0.44729345 0.47908232
+  (3.37e+03,1.84e+04] 0.39601140 0.29284750
+
+, , PURP = 3
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.35466667 0.43096873
+  (1.55e+03,3.37e+03] 0.37066667 0.39435545
+  (3.37e+03,1.84e+04] 0.27466667 0.17467582
+
+, , PURP = 4
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.70370370 0.84313725
+  (1.55e+03,3.37e+03] 0.25925926 0.01960784
+  (3.37e+03,1.84e+04] 0.03703704 0.13725490
+
+, , PURP = 5
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.49019608 0.42528736
+  (1.55e+03,3.37e+03] 0.37254902 0.21839080
+  (3.37e+03,1.84e+04] 0.13725490 0.35632184
+
+, , PURP = 6
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.40740741 0.42690058
+  (1.55e+03,3.37e+03] 0.22962963 0.25146199
+  (3.37e+03,1.84e+04] 0.36296296 0.32163743
+
+, , PURP = 8
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.77777778 0.84313725
+  (1.55e+03,3.37e+03] 0.11111111 0.01960784
+  (3.37e+03,1.84e+04] 0.11111111 0.13725490
+
+, , PURP = 9
+
+                     CRED
+CRAM                         BAD       GOOD
+  [250,1.55e+03]      0.06280193 0.25459318
+  (1.55e+03,3.37e+03] 0.26570048 0.34908136
+  (3.37e+03,1.84e+04] 0.67149758 0.39632546
+
+
+  Parameters of node VSST (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+    CRED
+VSST         BAD        GOOD
+   1 0.682681564 0.529896907
+   2 0.124022346 0.131271478
+   3 0.034636872 0.069415808
+   4 0.001117318 0.076288660
+   5 0.157541899 0.193127148
+
+, , PURP = 1
+
+    CRED
+VSST         BAD        GOOD
+   1 0.691428571 0.440462428
+   2 0.062857143 0.093641618
+   3 0.062857143 0.047398844
+   4 0.005714286 0.082080925
+   5 0.177142857 0.336416185
+
+, , PURP = 10
+
+    CRED
+VSST         BAD        GOOD
+   1 0.563636364 0.680000000
+   2 0.200000000 0.146666667
+   3 0.018181818 0.013333333
+   4 0.018181818 0.013333333
+   5 0.200000000 0.146666667
+
+, , PURP = 2
+
+    CRED
+VSST         BAD        GOOD
+   1 0.805128205 0.656680162
+   2 0.070085470 0.041295547
+   3 0.052991453 0.073684211
+   4 0.001709402 0.089878543
+   5 0.070085470 0.138461538
+
+, , PURP = 3
+
+    CRED
+VSST         BAD        GOOD
+   1 0.673600000 0.581693364
+   2 0.161600000 0.078260870
+   3 0.049600000 0.091990847
+   4 0.017600000 0.037070938
+   5 0.097600000 0.210983982
+
+, , PURP = 4
+
+    CRED
+VSST         BAD        GOOD
+   1 0.466666667 0.482352941
+   2 0.244444444 0.011764706
+   3 0.022222222 0.247058824
+   4 0.022222222 0.011764706
+   5 0.244444444 0.247058824
+
+, , PURP = 5
+
+    CRED
+VSST         BAD        GOOD
+   1 0.717647059 0.558620690
+   2 0.011764706 0.213793103
+   3 0.011764706 0.075862069
+   4 0.247058824 0.006896552
+   5 0.011764706 0.144827586
+
+, , PURP = 6
+
+    CRED
+VSST         BAD        GOOD
+   1 0.715555556 0.494736842
+   2 0.137777778 0.073684211
+   3 0.004444444 0.073684211
+   4 0.093333333 0.003508772
+   5 0.048888889 0.354385965
+
+, , PURP = 8
+
+    CRED
+VSST         BAD        GOOD
+   1 0.733333333 0.364705882
+   2 0.066666667 0.011764706
+   3 0.066666667 0.129411765
+   4 0.066666667 0.011764706
+   5 0.066666667 0.482352941
+
+, , PURP = 9
+
+    CRED
+VSST         BAD        GOOD
+   1 0.785507246 0.458267717
+   2 0.089855072 0.222047244
+   3 0.031884058 0.048818898
+   4 0.031884058 0.080314961
+   5 0.060869565 0.190551181
+
+
+  Parameters of node EMPL (multinomial distribution)
+
+Conditional probability table:
+ 
+, , OCC = 1
+
+    CRED
+EMPL         BAD        GOOD
+   1 0.636363636 0.692307692
+   2 0.272727273 0.200000000
+   3 0.030303030 0.076923077
+   4 0.030303030 0.015384615
+   5 0.030303030 0.015384615
+
+, , OCC = 2
+
+    CRED
+EMPL         BAD        GOOD
+   1 0.004366812 0.008605852
+   2 0.353711790 0.166953528
+   3 0.371179039 0.407917384
+   4 0.109170306 0.194492255
+   5 0.161572052 0.222030981
+
+, , OCC = 3
+
+    CRED
+EMPL         BAD        GOOD
+   1 0.033377837 0.014037058
+   2 0.225634179 0.146546884
+   3 0.380507343 0.357664234
+   4 0.166889186 0.198203257
+   5 0.193591455 0.283548568
+
+, , OCC = 4
+
+    CRED
+EMPL         BAD        GOOD
+   1 0.234449761 0.216284987
+   2 0.119617225 0.104325700
+   3 0.234449761 0.165394402
+   4 0.043062201 0.195928753
+   5 0.368421053 0.318066158
+
+
+  Parameters of node INST (multinomial distribution)
+
+Conditional probability table:
+ 
+, , CRAM = [250,1.55e+03]
+
+    CRED
+INST        BAD       GOOD
+   1 0.07672414 0.09314404
+   2 0.11810345 0.15131579
+   3 0.12844828 0.14716066
+   4 0.67672414 0.60837950
+
+, , CRAM = (1.55e+03,3.37e+03]
+
+    CRED
+INST        BAD       GOOD
+   1 0.06322957 0.12533245
+   2 0.20330739 0.24102394
+   3 0.10992218 0.16522606
+   4 0.62354086 0.46841755
+
+, , CRAM = (3.37e+03,1.84e+04]
+
+    CRED
+INST        BAD       GOOD
+   1 0.18274457 0.23127925
+   2 0.28057065 0.34360374
+   3 0.19904891 0.17043682
+   4 0.33763587 0.25468019
+
+
+  Parameters of node SEX (multinomial distribution)
+
+Conditional probability table:
+ 
+, , AGE = [19,29]
+
+   CRED
+SEX        BAD       GOOD
+  1 0.02463942 0.02318117
+  2 0.51502404 0.42974322
+  3 0.33473558 0.37838802
+  4 0.12560096 0.16868759
+
+, , AGE = (29,38]
+
+   CRED
+SEX        BAD       GOOD
+  1 0.12913223 0.04885877
+  2 0.30268595 0.18152639
+  3 0.51342975 0.70791726
+  4 0.05475207 0.06169757
+
+, , AGE = (38,75]
+
+   CRED
+SEX        BAD       GOOD
+  1 0.08657588 0.06065919
+  2 0.16828794 0.25000000
+  3 0.69357977 0.62868163
+  4 0.05155642 0.06065919
+
+
+  Parameters of node GUAR (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.884543762 0.922107675
+   2 0.057728119 0.035509737
+   3 0.057728119 0.042382589
+
+, , PURP = 1
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.980952381 0.949903661
+   2 0.009523810 0.013487476
+   3 0.009523810 0.036608863
+
+, , PURP = 10
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.575757576 0.555555556
+   2 0.393939394 0.288888889
+   3 0.030303030 0.155555556
+
+, , PURP = 2
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.891737892 0.892037787
+   2 0.105413105 0.049932524
+   3 0.002849003 0.058029690
+
+, , PURP = 3
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.866666667 0.865751335
+   2 0.066666667 0.032799390
+   3 0.066666667 0.101449275
+
+, , PURP = 4
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.925925926 0.960784314
+   2 0.037037037 0.019607843
+   3 0.037037037 0.019607843
+
+, , PURP = 5
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.960784314 0.770114943
+   2 0.019607843 0.080459770
+   3 0.019607843 0.149425287
+
+, , PURP = 6
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.985185185 0.988304094
+   2 0.007407407 0.005847953
+   3 0.007407407 0.005847953
+
+, , PURP = 8
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.777777778 0.960784314
+   2 0.111111111 0.019607843
+   3 0.111111111 0.019607843
+
+, , PURP = 9
+
+    CRED
+GUAR         BAD        GOOD
+   1 0.932367150 0.963254593
+   2 0.033816425 0.018372703
+   3 0.033816425 0.018372703
+
+
+  Parameters of node ADDR (multinomial distribution)
+
+Conditional probability table:
+ 
+, , EMPL = 1
+
+    CRED
+ADDR        BAD       GOOD
+   1 0.21875000 0.03125000
+   2 0.46875000 0.18125000
+   3 0.05208333 0.18125000
+   4 0.26041667 0.60625000
+
+, , EMPL = 2
+
+    CRED
+ADDR        BAD       GOOD
+   1 0.27112676 0.34223301
+   2 0.24295775 0.20631068
+   3 0.13028169 0.19660194
+   4 0.35563380 0.25485437
+
+, , EMPL = 3
+
+    CRED
+ADDR        BAD       GOOD
+   1 0.05000000 0.11546610
+   2 0.45952381 0.49258475
+   3 0.13571429 0.11546610
+   4 0.35476190 0.27648305
+
+, , EMPL = 4
+
+    CRED
+ADDR        BAD       GOOD
+   1 0.13125000 0.17095588
+   2 0.30625000 0.22242647
+   3 0.20625000 0.28125000
+   4 0.35625000 0.32536765
+
+, , EMPL = 5
+
+    CRED
+ADDR        BAD       GOOD
+   1 0.03461538 0.04342105
+   2 0.14230769 0.19605263
+   3 0.17307692 0.07500000
+   4 0.65000000 0.68552632
+
+
+  Parameters of node MVAA (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.19134078 0.39261168
+   2 0.29189944 0.18642612
+   3 0.30307263 0.27577320
+   4 0.21368715 0.14518900
+
+, , PURP = 1
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.06428571 0.11705202
+   2 0.12142857 0.19797688
+   3 0.29285714 0.44075145
+   4 0.52142857 0.24421965
+
+, , PURP = 10
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.02272727 0.15000000
+   2 0.20454545 0.01666667
+   3 0.56818182 0.28333333
+   4 0.20454545 0.55000000
+
+, , PURP = 2
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.19017094 0.25202429
+   2 0.30982906 0.41396761
+   3 0.37820513 0.24392713
+   4 0.12179487 0.09008097
+
+, , PURP = 3
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.30600000 0.38958810
+   2 0.16200000 0.16075515
+   3 0.37000000 0.38501144
+   4 0.16200000 0.06464531
+
+, , PURP = 4
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.25000000 0.48529412
+   2 0.25000000 0.25000000
+   3 0.47222222 0.13235294
+   4 0.02777778 0.13235294
+
+, , PURP = 5
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.25000000 0.49137931
+   2 0.13235294 0.14655172
+   3 0.13235294 0.28448276
+   4 0.48529412 0.07758621
+
+, , PURP = 6
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.09444444 0.07456140
+   2 0.27222222 0.25000000
+   3 0.18333333 0.32017544
+   4 0.45000000 0.35526316
+
+, , PURP = 8
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.08333333 0.25000000
+   2 0.75000000 0.48529412
+   3 0.08333333 0.25000000
+   4 0.08333333 0.01470588
+
+, , PURP = 9
+
+    CRED
+MVAA        BAD       GOOD
+   1 0.20652174 0.36417323
+   2 0.14855072 0.25393701
+   3 0.43840580 0.31692913
+   4 0.20652174 0.06496063
+
+
+  Parameters of node AGE (multinomial distribution)
+
+Conditional probability table:
+ 
+, , EMPL = 1
+
+         CRED
+AGE              BAD       GOOD
+  [19,29] 0.38888889 0.23333333
+  (29,38] 0.30555556 0.30833333
+  (38,75] 0.30555556 0.45833333
+
+, , EMPL = 2
+
+         CRED
+AGE              BAD       GOOD
+  [19,29] 0.62441315 0.55663430
+  (29,38] 0.25821596 0.27508091
+  (38,75] 0.11737089 0.16828479
+
+, , EMPL = 3
+
+         CRED
+AGE              BAD       GOOD
+  [19,29] 0.53650794 0.43361582
+  (29,38] 0.23174603 0.33615819
+  (38,75] 0.23174603 0.23022599
+
+, , EMPL = 4
+
+         CRED
+AGE              BAD       GOOD
+  [19,29] 0.58333333 0.32598039
+  (29,38] 0.30833333 0.40686275
+  (38,75] 0.10833333 0.26715686
+
+, , EMPL = 5
+
+         CRED
+AGE              BAD       GOOD
+  [19,29] 0.08205128 0.10701754
+  (29,38] 0.28205128 0.30701754
+  (38,75] 0.63589744 0.58596491
+
+
+  Parameters of node CCR (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PSPC = 0
+
+   CRED
+CCR        BAD       GOOD
+  1 0.16666667 0.39583333
+  2 0.12820513 0.02083333
+  3 0.70512821 0.58333333
+
+, , PSPC = 1
+
+   CRED
+CCR        BAD       GOOD
+  1 0.59770115 0.51515152
+  2 0.11494253 0.28787879
+  3 0.28735632 0.19696970
+
+, , PSPC = 2
+
+   CRED
+CCR        BAD       GOOD
+  1 0.13725490 0.10589319
+  2 0.01960784 0.03130755
+  3 0.84313725 0.86279926
+
+, , PSPC = 3
+
+   CRED
+CCR        BAD       GOOD
+  1 0.14942529 0.13661202
+  2 0.25287356 0.08743169
+  3 0.59770115 0.77595628
+
+, , PSPC = 4
+
+   CRED
+CCR        BAD       GOOD
+  1 0.18300654 0.07923497
+  2 0.06535948 0.02595628
+  3 0.75163399 0.89480874
+
+
+  Parameters of node APA (multinomial distribution)
+
+Conditional probability table:
+ 
+, , MVAA = 1
+
+   CRED
+APA         BAD        GOOD
+  1 0.251700680 0.181037701
+  2 0.725170068 0.817095931
+  3 0.023129252 0.001866368
+
+, , MVAA = 2
+
+   CRED
+APA         BAD        GOOD
+  1 0.241061130 0.181304571
+  2 0.739331027 0.809964047
+  3 0.019607843 0.008731382
+
+, , MVAA = 3
+
+   CRED
+APA         BAD        GOOD
+  1 0.284907183 0.135855856
+  2 0.711057304 0.858018018
+  3 0.004035513 0.006126126
+
+, , MVAA = 4
+
+   CRED
+APA         BAD        GOOD
+  1 0.137973138 0.106704438
+  2 0.240537241 0.197355996
+  3 0.621489621 0.695939566
+
+
+  Parameters of node BACR (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PSPC = 0
+
+    CRED
+BACR         BAD        GOOD
+   1 0.278846154 0.390625000
+   2 0.663461538 0.515625000
+   3 0.048076923 0.078125000
+   4 0.009615385 0.015625000
+
+, , PSPC = 1
+
+    CRED
+BACR         BAD        GOOD
+   1 0.767241379 0.875000000
+   2 0.215517241 0.102272727
+   3 0.008620690 0.011363636
+   4 0.008620690 0.011363636
+
+, , PSPC = 2
+
+    CRED
+BACR         BAD        GOOD
+   1 0.872058824 0.912292818
+   2 0.107352941 0.078038674
+   3 0.013235294 0.006215470
+   4 0.007352941 0.003453039
+
+, , PSPC = 3
+
+    CRED
+BACR         BAD        GOOD
+   1 0.387931034 0.331967213
+   2 0.560344828 0.659836066
+   3 0.008620690 0.004098361
+   4 0.043103448 0.004098361
+
+, , PSPC = 4
+
+    CRED
+BACR         BAD        GOOD
+   1 0.240196078 0.238729508
+   2 0.691176471 0.669057377
+   3 0.063725490 0.078893443
+   4 0.004901961 0.013319672
+
+
+  Parameters of node OCC (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+   CRED
+OCC         BAD        GOOD
+  1 0.034916201 0.055841924
+  2 0.224860335 0.268900344
+  3 0.582402235 0.536941581
+  4 0.157821229 0.138316151
+
+, , PURP = 1
+
+   CRED
+OCC         BAD        GOOD
+  1 0.007142857 0.013005780
+  2 0.121428571 0.059248555
+  3 0.521428571 0.591040462
+  4 0.350000000 0.336705202
+
+, , PURP = 10
+
+   CRED
+OCC         BAD        GOOD
+  1 0.022727273 0.150000000
+  2 0.022727273 0.150000000
+  3 0.022727273 0.150000000
+  4 0.931818182 0.550000000
+
+, , PURP = 2
+
+   CRED
+OCC         BAD        GOOD
+  1 0.019230769 0.001012146
+  2 0.173076923 0.187246964
+  3 0.651709402 0.713562753
+  4 0.155982906 0.098178138
+
+, , PURP = 3
+
+   CRED
+OCC         BAD        GOOD
+  1 0.002000000 0.009725400
+  2 0.210000000 0.201945080
+  3 0.690000000 0.696224256
+  4 0.098000000 0.092105263
+
+, , PURP = 4
+
+   CRED
+OCC         BAD        GOOD
+  1 0.027777778 0.132352941
+  2 0.250000000 0.014705882
+  3 0.694444444 0.838235294
+  4 0.027777778 0.014705882
+
+, , PURP = 5
+
+   CRED
+OCC         BAD        GOOD
+  1 0.132352941 0.077586207
+  2 0.250000000 0.353448276
+  3 0.602941176 0.560344828
+  4 0.014705882 0.008620690
+
+, , PURP = 6
+
+   CRED
+OCC         BAD        GOOD
+  1 0.050000000 0.004385965
+  2 0.138888889 0.250000000
+  3 0.627777778 0.635964912
+  4 0.183333333 0.109649123
+
+, , PURP = 8
+
+   CRED
+OCC         BAD        GOOD
+  1 0.083333333 0.014705882
+  2 0.083333333 0.602941176
+  3 0.750000000 0.250000000
+  4 0.083333333 0.132352941
+
+, , PURP = 9
+
+   CRED
+OCC         BAD        GOOD
+  1 0.032608696 0.017716535
+  2 0.148550725 0.238188976
+  3 0.612318841 0.616141732
+  4 0.206521739 0.127952756
+
+
+  Parameters of node NDEP (multinomial distribution)
+
+Conditional probability table:
+ 
+, , SEX = 1
+
+    CRED
+NDEP        BAD       GOOD
+   1 0.97058824 0.88400000
+   2 0.02941176 0.11600000
+
+, , SEX = 2
+
+    CRED
+NDEP        BAD       GOOD
+   1 0.93990930 0.95735476
+   2 0.06009070 0.04264524
+
+, , SEX = 3
+
+    CRED
+NDEP        BAD       GOOD
+   1 0.73089983 0.75790453
+   2 0.26910017 0.24209547
+
+, , SEX = 4
+
+    CRED
+NDEP        BAD       GOOD
+   1 0.93809524 0.97619048
+   2 0.06190476 0.02380952
+
+
+  Parameters of node TEL (multinomial distribution)
+
+Conditional probability table:
+ 
+, , OCC = 1
+
+   CRED
+TEL       BAD      GOOD
+  1 0.8030303 0.6538462
+  2 0.1969697 0.3461538
+
+, , OCC = 2
+
+   CRED
+TEL       BAD      GOOD
+  1 0.8318777 0.8442341
+  2 0.1681223 0.1557659
+
+, , OCC = 3
+
+   CRED
+TEL       BAD      GOOD
+  1 0.6815754 0.5920831
+  2 0.3184246 0.4079169
+
+, , OCC = 4
+
+   CRED
+TEL       BAD      GOOD
+  1 0.1459330 0.1488550
+  2 0.8540670 0.8511450
+
+
+  Parameters of node FORE (multinomial distribution)
+
+Conditional probability table:
+ 
+, , PURP = 0
+
+    CRED
+FORE         BAD        GOOD
+   1 0.963687151 0.874570447
+   2 0.036312849 0.125429553
+
+, , PURP = 1
+
+    CRED
+FORE         BAD        GOOD
+   1 0.985714286 0.973988439
+   2 0.014285714 0.026011561
+
+, , PURP = 10
+
+    CRED
+FORE         BAD        GOOD
+   1 0.772727273 0.966666667
+   2 0.227272727 0.033333333
+
+, , PURP = 2
+
+    CRED
+FORE         BAD        GOOD
+   1 0.995726496 0.941295547
+   2 0.004273504 0.058704453
+
+, , PURP = 3
+
+    CRED
+FORE         BAD        GOOD
+   1 0.996000000 0.975972540
+   2 0.004000000 0.024027460
+
+, , PURP = 4
+
+    CRED
+FORE         BAD        GOOD
+   1 0.944444444 0.970588235
+   2 0.055555556 0.029411765
+
+, , PURP = 5
+
+    CRED
+FORE         BAD        GOOD
+   1 0.970588235 0.913793103
+   2 0.029411765 0.086206897
+
+, , PURP = 6
+
+    CRED
+FORE         BAD        GOOD
+   1 0.988888889 0.991228070
+   2 0.011111111 0.008771930
+
+, , PURP = 8
+
+    CRED
+FORE         BAD        GOOD
+   1 0.833333333 0.970588235
+   2 0.166666667 0.029411765
+
+, , PURP = 9
+
+    CRED
+FORE         BAD        GOOD
+   1 0.992753623 0.996062992
+   2 0.007246377 0.003937008
+
+
+[1] -20444.3
+[1] -19294.97
+[1] -20726.5
+[1] -20941.52
+
+  k-fold cross-validation for Bayesian networks
+
+  target learning algorithm:             Naive Bayes Classifier 
+  number of subsets:                     10 
+  loss function:                         Classification Error 
+  training node:                         CRED 
+  expected loss:                         0.253 
+
+
+  k-fold cross-validation for Bayesian networks
+
+  target learning algorithm:             TAN Bayes Classifier 
+  number of subsets:                     10 
+  loss function:                         Classification Error 
+  training node:                         CRED 
+  expected loss:                         0.258 
+
+[1] 0.2509
+[1] 0.26306
+
+  k-fold cross-validation for Bayesian networks
+
+  target learning algorithm:             Hill-Climbing 
+  number of subsets:                     10 
+  loss function:                         Classification Error 
+  training node:                         CRED 
+  expected loss:                         0.314 
+
+[1] "BAL"  "DCM"  "PSPC" "PURP" "VSST"
+[1] 0.32
+
+  k-fold cross-validation for Bayesian networks
+
+  target learning algorithm:             Two-Phase Restricted Maximization 
+  number of subsets:                     10 
+  loss function:                         Classification Error 
+  training node:                         CRED 
+  expected loss:                         0.322 
+
+
+  k-fold cross-validation for Bayesian networks
+
+  target learning algorithm:             Hill-Climbing 
+  number of subsets:                     10 
+  loss function:                         Classification Error 
+  training node:                         CRED 
+  expected loss:                         0.3 
+
+[1] -19652.67
+[1] -19628.53
+[1] -19652.67
+[1] 0.267
+[1] 0.258
+[1] "BAL"  "DCM"  "PSPC" "PURP" "VSST"
+[1] "BAL"  "DCM"  "PSPC" "VSST" "CCR" 
+[1] "BAL"
+[1] "BAL"  "DCM"  "PSPC" "VSST" "TEL" 
+[1] "BAL"  "PSPC" "CCR"  "BACR"

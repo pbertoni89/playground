@@ -1,0 +1,246 @@
+---
+title: "MC_Explore"
+author: "Patrizio Bertoni"
+date: "10 January 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+There are number of R packages devoted to sophisticated applications of Markov chains. These include msm and SemiMarkov for fitting multistate models to panel data, mstate for survival analysis applications, TPmsm for estimating transition probabilities for 3-state progressive disease models, heemod for applying Markov models to health care economic applications, HMM and depmixS4 for fitting Hidden Markov Models and mcmc for working with Monte Carlo Markov Chains. All of these assume some considerable knowledge of the underlying theory. To my knowledge only DTMCPack and the relatively recent package,  markovchain, were written to facilitate basic computations with Markov chains.
+
+In this post, we'll explore some basic properties of discrete time Markov chains using the functions provided by the markovchain package supplemented with standard R functions and a few functions from other contributed packages. "Chapter 11", of Snell's online probability book will be our guide. The calculations displayed here illustrate some of the theory developed in this document. In the text below, section numbers refer to this document.
+
+A large part of working with discrete time Markov chains involves manipulating the matrix of transition probabilities associated with the chain.  This first section of code replicates the Oz transition probability matrix from section 11.1 and uses the plotmat() function from the diagram package to illustrate it. Then, the efficient operator %^% from the expm package is used to raise the Oz matrix to the third power. Finally, left matrix multiplication of OZ^3 by the distribution vector u = (1/3, 1/3, 1/3) gives the weather forecast three days ahead.
+
+```{r}
+library(expm)
+library(markovchain)
+library(diagram)
+library(pracma)
+
+stateNames <- c("Rain","Nice","Snow")
+Oz <- matrix(c(.5,.25,.25,.5,0,.5,.25,.25,.5),
+             nrow=3, byrow=TRUE)
+row.names(Oz) <- stateNames; colnames(Oz) <- stateNames
+Oz
+
+#      Rain Nice Snow
+# Rain 0.50 0.25 0.25
+# Nice 0.50 0.00 0.50
+# Snow 0.25 0.25 0.50
+
+plotmat(Oz,pos = c(1,2),
+        lwd = 1, box.lwd = 2,
+        cex.txt = 0.8,
+        box.size = 0.1,
+        box.type = "circle",
+        box.prop = 0.5,
+        box.col = "light yellow",
+        arr.length=.1,
+        arr.width=.1,
+        self.cex = .4,
+        self.shifty = -.01,
+        self.shiftx = .13,
+        main = "")
+
+Oz3 <- Oz %^% 3
+round(Oz3,3)
+
+#      Rain  Nice  Snow
+# Rain 0.406 0.203 0.391
+# Nice 0.406 0.188 0.406
+# Snow 0.391 0.203 0.406
+
+u <- c(1/3, 1/3, 1/3)
+round(u %*% Oz3,3)
+#0.401 0.198 0.401
+```
+
+The igraph package can also be used to Markov chain diagrams, but I prefer the "drawn on a chalkboard" look of plotmat.
+
+This next block of code reproduces the 5-state Drunkward's walk example from section 11.2 which presents the fundamentals of absorbing Markov chains. First, the transition matrix describing the chain is instantiated as an object of the S4 class makrovchain. Then, functions from the markovchain package are used to identify the absorbing and transient states of the chain and place the transition matrix, P, into canonical form.
+
+```{r}
+p <- c(.5,0,.5)
+dw <- c(1,rep(0,4),p,0,0,0,p,0,0,0,p,rep(0,4),1)
+DW <- matrix(dw,5,5,byrow=TRUE)
+
+DWmc <-new("markovchain",
+transitionMatrix = DW,
+states = c("0","1","2","3","4"),
+name = "Drunkard's Walk")
+DWmc
+# Drunkard's Walk
+# A 5 - dimensional discrete Markov Chain with following states
+# 0 1 2 3 4
+# The transition matrix (by rows) is defined as follows
+# 0 1 2 3 4
+# 0 1.0 0.0 0.0 0.0 0.0
+# 1 0.5 0.0 0.5 0.0 0.0
+# 2 0.0 0.5 0.0 0.5 0.0
+# 3 0.0 0.0 0.5 0.0 0.5
+# 4 0.0 0.0 0.0 0.0 1.0
+
+# Determine transient states
+transientStates(DWmc)
+#[1] "1" "2" "3"
+
+# determine absorbing states
+absorbingStates(DWmc)
+#[1] "0" "4"
+
+```
+
+In canonical form, the transition matrix, P, is partitioned into the Identity matrix, I, a matrix of 0's, the matrix, Q, containing the transition probabilities for the transient states and a matrix, R, containing the transition probabilities for the absorbing states.
+
+Next, we find the Fundamental Matrix, N, by inverting (I - Q). For each transient state, j, nij gives the expected number of times the process is in state j given that it started in transient state i.  ui is the expected time until absorption given that the process starts in state i. Finally, we compute the matrix B, where bij is the probability that the process will be absorbed in state J given that it starts in state i.
+
+```{r}
+# Find Matrix Q
+getRQ <- function(M,type="Q"){
+###############if(length(absorbingStates(M)) == 0)
+###############    stop("Not Absorbing Matrix")
+tm <- M@transitionMatrix
+d <- diag(tm)
+m <- max(which(d == 1))
+n <- length(d)
+ifelse(type=="Q",
+A <- tm[(m+1):n,(m+1):n],
+A <- tm[(m+1):n,1:m])
+return(A)
+}
+
+Q <- getRQ(P)
+
+# Find Fundamental Matrix
+I <- diag(dim(Q)[2])
+N <- solve(I - Q)
+N
+# 1 2 3
+# 1 1.5 1 0.5
+# 2 1.0 2 1.0
+# 3 0.5 1 1.5
+
+# Calculate time to absorption
+c <- rep(1,dim(N)[2])
+u <- N %*% c
+u
+# 1 3
+# 2 4
+# 3 3
+
+R <- getRQ(P,"R")
+B <- N %*% R
+B
+# 0 4
+# 1 0.75 0.25
+# 2 0.50 0.50
+# 3 0.25 0.75
+
+```
+
+For section 11. 3, which deals with regular and ergodic Markov chains we return to Oz, and provide four options for calculating the steady state, or limiting  probability distribution for this regular transition matrix. The first three options involve standard methods which are readily available in R. Method 1 uses %^% to raise the matrix Oz to a sufficiently high value. Method 2 calculates the eigenvalue for the eigenvector 1, and method 3 uses the nullspace() function form the pracma package to compute the null space, or kernel of the linear transformation associated with the matrix. The fourth method uses the steadyStates() function from the markovchain package. To use this function, we first convert Oz into a markovchain object.
+
+```{r}
+# 11.3 Ergodic Markov Chains
+
+# Four methods to get steady states
+# Method 1: compute powers on Matrix
+
+round(Oz %^% 6,2)
+# Rain Nice Snow
+# Rain 0.4 0.2 0.4
+# Nice 0.4 0.2 0.4
+# Snow 0.4 0.2 0.4
+
+# Method 2: Compute eigenvector of eigenvalue 1
+
+eigenOz <- eigen(t(Oz))
+ev <- eigenOz$vectors[,1] / sum(eigenOz$vectors[,1])
+ev
+
+# Method 3: compute null space of (P - I)
+I <- diag(3)
+ns <- nullspace(t(Oz - I))
+ns <- round(ns / sum(ns),2)
+ns
+
+
+# Method 4: use function in markovchain package
+
+OzMC<-new("markovchain",
+states=stateNames,
+transitionMatrix=
+matrix(c(.5,.25,.25,.5,0,.5,.25,.25,.5),
+nrow=3,
+byrow=TRUE,
+dimnames=list(stateNames,statesNames)))
+
+steadyStates(OzMC)
+
+```
+
+The steadyState() function seems to be reasonably efficient for fairly large Markov Chains. The following code creates a 5,000 row by 5,000 column regular Markov matrix. On my modest, Lenovo ThinkPad ultrabook it took a little less than 2 minutes to create the markovchain object and about 11 minutes to compute the steady state distribution.
+
+```{r}
+# Create a large random regular matrix
+randReg <- function(N){
+M <- matrix(runif(N^2,min=1,max=N),nrow=N,ncol=N)
+rowS <- rowSums(M)
+regM <- M/rowS
+return(regM)
+}
+
+N <- 5000
+M <-randReg(N)
+#rowSums(M)
+
+system.time(regMC <- new("markovchain", states = as.character(1:N),
+transitionMatrix = M,
+name = "M"))
+# user system elapsed
+# 98.33 0.82 99.46
+
+system.time(ss <- steadyStates(regMC))
+# user system elapsed
+# 618.47 0.61 640.05
+
+```
+
+We conclude this little Markov Chain excursion by using the rmarkovchain() function to simulate a trajectory from the process represented by this large random matrix and plot the results. It seems that this is a reasonable method for simulating a stationary time series in a way that makes it easy to control the limits of its variability.
+
+```{r}
+#sample from regMC
+regMCts <- rmarkovchain(n=1000,object=regMC)
+regMCtsDf <- as.data.frame(regMCts,stringsAsFactors = FALSE)
+regMCtsDf$index <- 1:1000
+regMCtsDf$regMCts <- as.numeric(regMCtsDf$regMCts)
+
+library(ggplot2)
+p <- ggplot(regMCtsDf,aes(index,regMCts))
+p + geom_line(colour="dark red") +
+xlab("time") +
+ylab("state") +
+ggtitle("Random Markov Chain")
+
+```
+
+For more on the capabilities of the markovchain package do have a look at the package vignette. For more theory on both discrete and continuous time Markov processes illustrated with R see Norm Matloff's book: From Algorithms to Z-Scores: Probabilistic and Statistical Modeling in Computer Science.
+
+ 
