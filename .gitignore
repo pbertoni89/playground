@@ -137,3 +137,5 @@ UpgradeLog*
 /cxx/boost/JsonPropertyTree/dist/
 /cxx/boost/Boost Sparse Matrix/build/
 /cxx/boost/Boost Sparse Matrix/dist/
+/cxx/opencv/dft/build/
+/cxx/opencv/dft/dist/
