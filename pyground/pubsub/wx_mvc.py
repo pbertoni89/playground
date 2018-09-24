@@ -103,8 +103,8 @@ class Model:
 class Controller:
     """
         the controller owns 1 model and 2 views
-		 - one for reading the current value
-		 - one for changing the current value
+         - one for reading the current value
+         - one for changing the current value
     """
     def __init__(self):
         self.model = Model()

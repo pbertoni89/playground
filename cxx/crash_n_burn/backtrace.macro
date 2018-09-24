@@ -1,0 +1,10 @@
+# ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_7.html
+
+# I cannot: this macro is not meant to be run
+# catch throw
+# continue
+
+bt
+# backtrace -n 10
+# bt -n 10
+quit

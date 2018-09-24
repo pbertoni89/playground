@@ -2,7 +2,7 @@
  * https://stackoverflow.com/questions/36722044/how-to-initialize-a-cvmat-using-a-vector-of-floats
  */
 
-#include <opencv2/highgui.hpp>
+#include <opencv4/opencv2/highgui.hpp>
 #include <iostream>
 
 
@@ -81,6 +81,17 @@ int main(int argc, char* argv[])
 
 	m *= 2;
 	cout << "now m " << m << " while vec[0] " << vec[0] << endl;
+
+
+
+	Mat mat16 = (Mat_<uint16_t>(3, 3) << 1, 3, 7, 2, 4, 256, 0, 65000, 70000);
+
+	cout << "mat16 is " << mat16 << endl;
+
+	Mat mat8;
+	mat16.convertTo(mat8, CV_8UC1);
+
+	cout << "mat8 is " << mat8 << endl;
 
 	return 0;
 }
