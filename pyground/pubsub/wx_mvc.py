@@ -20,6 +20,7 @@ from pubsub.utils.notification import useNotifyByWriteFile
 #  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
 
+# verbose debug
 useNotifyByWriteFile(sys.stdout)
 
 
