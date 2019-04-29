@@ -1,3 +1,7 @@
+# Sources
+
+*The* [Book](https://doc.rust-lang.org/book/) is our primary source
+
 ### rustground
 
 For the sake of clarity, this includes `hello_cargo` as

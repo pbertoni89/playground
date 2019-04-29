@@ -141,3 +141,5 @@ UpgradeLog*
 /cxx/boost/Boost Sparse Matrix/dist/
 /cxx/opencv/dft/build/
 /cxx/opencv/dft/dist/
+.idea/
+

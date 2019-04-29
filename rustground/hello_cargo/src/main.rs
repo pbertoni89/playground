@@ -44,7 +44,7 @@ fn demo_threads() {
         println!("Thread finished with count={}",
         h.join().map_err(|_| "Could not join a thread!").unwrap());
     }
-    println!("done!\n\n\n");
+    println!("done!\n");
 }
 
 
