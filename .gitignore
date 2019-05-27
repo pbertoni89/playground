@@ -2,6 +2,11 @@
 # DOCUMENTATION
 doc/
 
+CMakeFiles/
+*cmake_install.cmake
+Makefile
+intel64/
+
 ### QT
 build-*
 *.pro.user*
