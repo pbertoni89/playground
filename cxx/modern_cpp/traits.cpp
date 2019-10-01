@@ -76,7 +76,7 @@ algorithm_selector< true >
 
 
 // API
-template< typename T > 
+template< typename T >
 void algorithm( T& object )
 {
 	algorithm_selector< supports_optimised_implementation< T >::value >::implementation(object);
