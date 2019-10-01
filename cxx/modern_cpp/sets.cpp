@@ -80,9 +80,9 @@ int main (int argc, char**argv)
 
 	//std::cout << s1.begin() << "\n";
 	std::cout << "beg  " << *s1.begin() << "\n";
-	std::cout << "end  " << *s1.end() << "\n";
+	std::cout << "end  IS WRONG " << *s1.end() << "\n";
 	std::cout << "rbeg " << *s1.rbegin() << "\n";
-	std::cout << "rend " << *s1.rend() << "\n";
+	std::cout << "rend IS WRONG " << *s1.rend() << "\n";
 	//std::cout << s0.begin() << "\n";
 	std::cout << *s0.begin() << "\n";
 	std::cout << *s0.end() << "\n";
