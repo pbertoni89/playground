@@ -12,6 +12,7 @@
 #define SECS_SLEEP 2
 #define SECS_SLEEP_MAJOR 3
 
+
 void _thread_fun(int exSrc)
 {
 	std::cout << std::this_thread::get_id() << "\tsleeping for " << SECS_SLEEP << "\tstart: must set " << exSrc << std::endl;
@@ -21,6 +22,7 @@ void _thread_fun(int exSrc)
 	std::this_thread::sleep_for(std::chrono::seconds(SECS_SLEEP));
 	std::cout << std::this_thread::get_id() << "\tsleeping for " << SECS_SLEEP << "\tend  : had  set " << _exSrc << std::endl;
 }
+
 
 void _print_status(int ex, int time, std::future_status status)
 {
@@ -39,13 +41,16 @@ void _print_status(int ex, int time, std::future_status status)
 		ss << "timeout (still running)";
 		break;
 	}
-	
+
 	std::cout << ss.str() << std::endl;
 }
 
-/** If you are willing to make use of C++11 std::async and std::future for running your tasks,
-	then you can utilize the wait_for function of std::future to check if the thread is still
-	running in a neat way like this																				*/
+
+/**
+ * If you are willing to make use of C++11 std::async and std::future for running your tasks,
+ * then you can utilize the wait_for function of std::future to check if the thread is still
+ * running in a neat way like this
+ */
 int ex1()
 {
 	/* Run some task on new thread. The launch policy std::launch::async
@@ -64,7 +69,7 @@ int ex1()
 
 	std::this_thread::sleep_for(std::chrono::seconds(SECS_SLEEP_MAJOR));
 	status = future.wait_for(std::chrono::milliseconds(0));
-	_print_status(1, 2, status);							// 
+	_print_status(1, 2, status);							//
 
 	//  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
 
@@ -118,6 +123,7 @@ void ex2()
 	t.join();
 }
 
+
 /** it might be simpler to just do it like others have already mentioned										*/
 void ex3()
 {
@@ -137,6 +143,7 @@ void ex3()
 
 	t.join();
 }
+
 
 /** There's also the std::packaged_task for use with std::thread for a cleaner solution than using std::promise	*/
 void ex4()
@@ -160,10 +167,10 @@ void ex4()
 	t.join();
 }
 
+
 int main(int argc, char** argv)
 {
 	ex1();
-
 	ex2();
 
 	/** Both of these examples will output:
@@ -171,6 +178,5 @@ int main(int argc, char** argv)
 		This is of course because the thread status is checked before the task is finished		*/
 
 	ex3();
-
 	ex4();
 }

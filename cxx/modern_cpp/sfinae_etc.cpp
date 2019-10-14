@@ -56,8 +56,47 @@ public:
 };
 
 
+
+
+class C             { public: virtual void bark() { std::cout << "c\n"; } };
+class Z  : public C { public: virtual void bark() override { std::cout << "z\n"; } };
+class PR : public Z { public: virtual void bark() override { std::cout << "pr\n"; } };
+class PC : public Z { public: virtual void bark() override { std::cout << "pc\n"; } };
+class TL : public C { public: virtual void bark() override { std::cout << "tl\n"; } };
+
+//void foo(std::shared_ptr<C> a)          // last resort
+//{ std::cout << "foo C "; a->bark(); }
+void foo(std::shared_ptr<Z> a)
+{ std::cout << "foo Z "; a->bark(); }
+void foo(std::shared_ptr<PR> a)
+{ std::cout << "foo PR "; a->bark(); }
+//void foo(std::shared_ptr<PC> a)         // wow, SFINAE solves to Z
+//{ std::cout << "foo PC "; a->bark(); }
+void foo(std::shared_ptr<TL> a)
+{ std::cout << "foo TL "; a->bark(); }
+
+int demo_overload()
+{
+    C c;
+    Z z;
+    PR pr;
+    PC pc;
+    TL tl;
+    std::cout << std::is_same<C, Z>::value << "\n";   // false
+    std::cout << std::is_same<PR, PC>::value << "\n";   // false
+    std::cout << std::is_same<decltype(pr), PR>::value << "\n";   // true
+    std::cout << std::is_same<decltype(pr), Z>::value << "\n";   // false
+    //foo(std::make_shared<C>());
+    foo(std::make_shared<Z>());
+    foo(std::make_shared<PR>()); foo(std::make_shared<PC>());
+    foo(std::make_shared<TL>());
+}
+
+
 int main (int argc, char ** argv)
 {
+	demo_overload();
+
 	std::vector<int> v = {1, 11, 111};
 	Foo f;
 	f.catchIterator(v.begin());							// f2
