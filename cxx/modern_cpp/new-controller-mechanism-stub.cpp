@@ -34,17 +34,33 @@ public:
 };
 
 
+void demo_cast_foo(std::shared_ptr<A> spa)
+{
+	std::shared_ptr<Pc> spc;
+	spc = spa;
+	std::cerr << reinterpret_cast<std::shared_ptr<Pc>>(spa)->m_id;
+}
+
+int demo_cast()
+{
+	std::shared_ptr<Pc> spc = std::make_shared<Pc>(34);
+	demo_cast_foo(spc);
+}
+
+
 int main (int argc, char **argv)
 {
+	demo_cast();
+
 	/* lo scope del main qui e' come quello della connessione Controller qui. tecnicamente non ce' piu nemmeno bisogno
-	   che il Controller sia una connessione. potrebbe essere un semplice "thread persistente" nel datasource. Anzi,
-	   tecnicamente gia' lo e', poiche' solamente le ConnectionCoherent finiscono gestite dal ConnectionManager, che,
-	   a questo punto, potrebbe rinominarsi CoherencyManager
-	  
-	   Le ConnectionProducerController dunque non avrebbero piu' bisogno di avviare un thread in CoherencyManager.
-	   Mantengono si' un loro "run" che idealmente ha come parametro il t_send_command condiviso, "sc".
-	   Se questo parametro non rompe il pippone di eredita' dei metodi virtuali (ora vediamo)   
-	*/
+	 * che il Controller sia una connessione. potrebbe essere un semplice "thread persistente" nel datasource. Anzi,
+	 * tecnicamente gia' lo e', poiche' solamente le ConnectionCoherent finiscono gestite dal ConnectionManager, che,
+	 * a questo punto, potrebbe rinominarsi CoherencyManager
+	 *
+	 * Le ConnectionProducerController dunque non avrebbero piu' bisogno di avviare un thread in CoherencyManager.
+	 * Mantengono si' un loro "run" che idealmente ha come parametro il t_send_command condiviso, "sc".
+	 * Se questo parametro non rompe il pippone di eredita' dei metodi virtuali (ora vediamo)
+	 */
 	std::vector<Pc> vpc;
 	for (int i = 3; i < 13; i += 3)
 		vpc.emplace_back(i);
