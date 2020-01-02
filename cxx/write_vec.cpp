@@ -85,6 +85,25 @@ void third_version()
 }
 
 
+void vector_copy()
+{
+	std::vector<int> v1(10), v2(10, 5), v3(10, 0);
+	for (int i = 0; i < v1.size(); i++)
+		v1[i] = i *10;
+	std::copy(v1.begin() + 3, v1.begin() + 5, v3.begin() + 6);
+	
+	std::cout << "\nv1";
+	for (auto & i : v1)
+        std::cout << " " << i;
+	std::cout << "\nv2";
+	for (auto & i : v2)
+		std::cout << " " << i;
+	std::cout << "\nv3";
+	for (auto & i : v3)
+        std::cout << " " << i;
+}
+
+
 void c_version()
 {
 	std::vector<mine_t> vecR(DIM);
@@ -106,6 +125,8 @@ void c_version()
 
 int main()
 {
+	vector_copy();
+
 	fill_file();
 
 	// first_version_reads_zeros();
