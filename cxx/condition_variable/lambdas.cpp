@@ -5,18 +5,16 @@
 #include <chrono>
 #include <queue>
 
-using namespace std;
-
-condition_variable cond_var;
-
-mutex m;
+std::condition_variable cond_var;
+std::mutex m;
 
 
 int main()
 {
     int value = 100;
     bool notified = false;
-    thread reporter([&]()
+
+    std::thread reporter([&]()
     {
         /*
         unique_lock<mutex> lock(m);
@@ -24,10 +22,10 @@ int main()
             cond_var.wait(lock);
         }
         */
-        cout << "The value is " << value << endl;
+        std::cout << "The value is " << value << std::endl;
     });
 
-    thread assigner([&]()
+    std::thread assigner([&]()
     {
         value = 20;
         /*

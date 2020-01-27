@@ -1,7 +1,3 @@
-// Std Atomic.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
 
 // constructing atomics
 #include <iostream>       // std::cout
@@ -13,6 +9,11 @@
 std::atomic<bool> ready(false);
 
 std::atomic_flag winner = ATOMIC_FLAG_INIT;
+
+
+using tci_t = std::pair<int, int>;
+
+std::atomic<tci_t> atci;
 
 
 void count1m(int id)
