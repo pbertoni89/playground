@@ -46,7 +46,7 @@ void first_version_reads_zeros()
 	auto ptrR = reinterpret_cast<char*> (vecR.data());
 
 	ifs.read(ptrR, BYTES_RW);
-	
+
 	for (const auto & I : vecR)
 	{
 		std::cout << "\n - " << I;
@@ -91,7 +91,7 @@ void vector_copy()
 	for (int i = 0; i < v1.size(); i++)
 		v1[i] = i *10;
 	std::copy(v1.begin() + 3, v1.begin() + 5, v3.begin() + 6);
-	
+
 	std::cout << "\nv1";
 	for (auto & i : v1)
         std::cout << " " << i;
@@ -125,6 +125,12 @@ void c_version()
 
 int main()
 {
+	std::vector<int> vr;
+	vr.reserve(4);
+	std::cout << "vr[0] = " << vr[0] << "\n";
+	vr[3] = 222;
+	std::cout << "vr[3] = " << vr[3] << "\n";
+
 	vector_copy();
 
 	fill_file();
@@ -134,5 +140,5 @@ int main()
 	//third_version();
 	c_version();
 
-	std::cout << std::endl;	
+	std::cout << std::endl;
 }
