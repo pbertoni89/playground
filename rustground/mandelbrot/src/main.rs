@@ -78,7 +78,7 @@ fn escape_time(c: Complex<f64>, limit: u32) -> Option<u32> {
 #[test]
 fn test_escape_time() {
 	assert_eq!(escape_time(Complex{ re: 0.1, im: 0.1}, 8), None);
-    assert_eq!(escape_time(Complex{ re: 1.1, im: 0.1}, 8), Some(1));
+	assert_eq!(escape_time(Complex{ re: 1.1, im: 0.1}, 8), Some(1));
 }
 
 
@@ -117,6 +117,9 @@ fn render(pixels: &mut [u8], bounds: (usize, usize), tl: Complex<f64>, br: Compl
 	assert!(pixels.len() == bounds.0 * bounds.1);
 
 	for row in 0..bounds.1 {
+		if row % 100 == 0 {
+			println!("generating row {}", row)
+		}
 		for col in 0..bounds.0 {
 			let pt = pixel_to_point(bounds, (col, row), tl, br);
 			pixels[row * bounds.0 + col] = match escape_time(pt, 255) {
@@ -156,7 +159,7 @@ fn write_image(filename: &str, pixels: & [u8], bounds: (usize, usize))
 /// Here we are
 fn main() {
 
-    println!("Some eg 2 is {:?}", escape_time(Complex{ re: 1.1, im: 0.1}, 8));  // {:?} helps when dealing with Option
+	println!("Some eg 2 is {:?}", escape_time(Complex{ re: 1.1, im: 0.1}, 8));  // {:?} helps when dealing with Option
 
 	let args: Vec<String> = std::env::args().collect();  // without type annotation .len() will fail
 	if args.len() != 5 {

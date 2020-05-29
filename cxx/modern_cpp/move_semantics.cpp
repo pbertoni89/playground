@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ostream>
 #include <algorithm>
 
 using namespace std;
@@ -147,10 +148,74 @@ void demo_ptr()
 
 // -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -
 
+#define EXPLICIT_COPY_MOVE  // needed
+
+class Container
+{
+public:
+	int m_i;
+	std::vector<int> m_vi;
+
+	explicit Container(size_t sz) :
+		m_i(-1),
+		m_vi(sz, 7)
+	{ std::cout << "Container(" << sz << ")\n"; };
+
+#ifdef EXPLICIT_COPY_MOVE
+	Container(const Container & oth) : m_vi(oth.m_vi)
+	{ std::cout << "C_Container(oth) \n"; }
+
+	Container & operator = (const Container & oth)
+	{ m_vi = oth.m_vi;  std::cout << "C_Op(oth) \n"; return *this; }
+
+	Container(Container && oth) : m_vi(std::move(oth.m_vi))
+	{ std::cout << "M_Container(oth) \n"; }
+
+	Container & operator = (Container && oth)
+	{ m_vi = std::move(oth.m_vi);  std::cout << "M_Op(oth) \n"; return *this; }
+#endif
+
+	friend std::ostream & operator << (std::ostream & o, const Container & c)
+	{
+		o << "{int " << c.m_i << ", v[";
+		for (auto i : c.m_vi)
+			o << " " << i;
+		o << "]}"; return o;
+	}
+};
+
+void demo_container()
+{
+	std::cout << "-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  \n\n";
+	Container c1(10);
+	c1.m_i = 1;
+	auto c2(c1);
+	c2.m_i = 2;
+	std::cout << "c1: " << c1 << "\n";
+	std::cout << "c2: " << c2 << "\n\n";
+
+	auto c3(std::move(c2));
+	std::cout << "c1: " << c1 << "\n";
+	std::cout << "c2: " << c2 << "\n";    // empty
+	std::cout << "c3: " << c3 << "\n\n";  // c3: {int -1229489104, front 7} if MOVE_EXPLICIT is defined and we do not set rules on m_i
+
+	c3 = c1;
+	std::cout << "c1: " << c1 << "\n";
+	std::cout << "c2: " << c2 << "\n";    // empty
+	std::cout << "c3: " << c3 << "\n\n";  // c3: {int -1229489104, front 7} if MOVE_EXPLICIT is defined and we do not set rules on m_i
+
+	c3 = std::move(c1);
+	std::cout << "c1: " << c1 << "\n";    // empty
+	std::cout << "c2: " << c2 << "\n";    // empty
+	std::cout << "c3: " << c3 << "\n\n";  // c3: {int -1229489104, front 7} if MOVE_EXPLICIT is defined and we do not set rules on m_i
+}
+
+// -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -  / -
 
 int main()
 {
 	demo_class();
 	demo_string();
 	demo_ptr();
+	demo_container();
 }
