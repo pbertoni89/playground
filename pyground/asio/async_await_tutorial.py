@@ -85,7 +85,7 @@ async def mngr_factorial():
 # - - - MAIN - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def signal_handler(signal, frame):
+def signal_handler(_s, _f):
     logging.warning('SIGINT received')
     loop.stop()
     _client.close()

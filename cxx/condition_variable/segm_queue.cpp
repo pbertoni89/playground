@@ -13,16 +13,8 @@
 #include <iomanip>
 
 
-std::mutex m;
+// std::mutex m;
 std::condition_variable cv;
-
-// Even if the shared variable is atomic, it must be modified under the mutex in order to correctly publish the modification to the waiting thread
-bool ready = false;
-
-std::string data;
-
-bool processed = false;
-
 
 
 class t_timestamp
@@ -58,54 +50,43 @@ public:
 
 
 
-void worker_thread (int id)
+void thread_producer (int id)
 {
 	std::cerr << t_timestamp().to_string() << " w " << id << " starts living\n";
 
-	// Wait until main() sends data
-	std::unique_lock<std::mutex> lk(m);
-	cv.wait(lk, [] {return ready;} );   // [&] is not necessary... because ready is in global scope
+	while (true)
+	{
+		{
+//			std::unique_lock<std::mutex> lk(m);
+			std::cerr << t_timestamp().to_string() << " w " << id << " locked\n";
 
-	// after the wait, we own the lock
-	std::cerr << t_timestamp().to_string() << " w " << id << " processes data\n";
-	data += ", ap_" + std::to_string(id);
-
-	std::this_thread::sleep_for(std::chrono::seconds(id));
-
-	// Send data back to main()
-	processed = true;
-	std::cerr << t_timestamp().to_string() << " w " << id << " signals completion\n";
-
-	// Manual unlocking is done before notifying, to avoid waking up
-	// the waiting thread only to block again (see notify_one for details)
-	lk.unlock();
-	cv.notify_one();
+//			lk.unlock();
+			std::this_thread::sleep_for(std::chrono::seconds(id ? 20 : 5));
+		}
+		cv.notify_one();
+	}
 }
 
 
 int main()
 {
 	std::vector<std::thread> vt;
-	for (int i = 0; i < 5; i++)
-		vt.emplace_back(worker_thread, i);
+	for (int i = 0; i < 4; i++)
+		vt.emplace_back(thread_producer, i);
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
-	
-					data = "Example data";
-					// send data to the worker thread
-					{
-						std::lock_guard<std::mutex> lk(m);
-						std::cerr << t_timestamp().to_string() << " main() signals data ready for processing\n";
-						ready = true;
-					}
-					cv.notify_one();
 
-					// wait(_for|_until) for the worker
-					{
-						std::unique_lock<std::mutex> lk(m);
-						cv.wait(lk, [] {return processed;} );
-					}
-					std::cerr << t_timestamp().to_string() << " main() is back, data = " << data << '\n';
+	while (true)
+	{
+		{
+			std::mutex m;
+			std::unique_lock<std::mutex> lk(m);
+			std::cerr << t_timestamp().to_string() << " main locked\n";
+			cv.wait(lk);
+			lk.unlock();
+		}
+		std::cerr << t_timestamp().to_string() << " main waited\n";
+	}
 
 	for (auto & t : vt)
 		t.join();
