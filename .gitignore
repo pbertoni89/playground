@@ -2,6 +2,8 @@
 # DOCUMENTATION
 doc/
 
+__pycache__/
+
 CMakeFiles/
 *cmake_install.cmake
 Makefile
