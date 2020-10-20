@@ -18,7 +18,7 @@ May 2009
 :license: BSD, see LICENSE.txt for details.
 """
 
-from Queue import Queue
+from queue import Queue
 import time
 import threading
 import sys
@@ -31,24 +31,24 @@ __date__ = "$31-May-2009 9:11:41 PM$"
 resultStep = 1000000  # how many counts for thread "result" to be available
 
 
-def threadObserver(transfers, threadObj, count):
+def thread_observer(transfers, thread_obj, count):
     """Listener that listens for data from testTopic. This function
     doesn't know where the data comes from (or in what thread it was
     generated... but threadObj is the thread in which this
     threadObserver is called and should indicate Main thread)."""
 
-    print(transfers, threadObj, count / resultStep)
+    print(transfers, thread_obj, count / resultStep)
 
 
-pub.subscribe(threadObserver, 'testTopic')
+pub.subscribe(thread_observer, 'testTopic')
 
 
-def onIdle():
+def on_idle():
     """This should be registered with 'gui' to be called when gui is idle
     so we get a chance to transfer data from aux thread without blocking
     the gui. Ie this function must spend as little time as possible so
     'gui' remains reponsive."""
-    thread.transferData()
+    thread.transfer_data()
 
 
 class ParaFunction(threading.Thread):
@@ -79,7 +79,7 @@ class ParaFunction(threading.Thread):
     def stop(self):
         self.running = False
 
-    def transferData(self):
+    def transfer_data(self):
         """Send data from aux thread to main thread. The data was put in
         self.queue by the aux thread, and this queue is a Queue.Queue which
         is a synchronized queue for inter-thread communication.
@@ -96,17 +96,16 @@ thread = ParaFunction()
 
 
 def main():
-    idleFns = []  # list of functions to call when 'gui' idle
-    idleFns.append(onIdle)
+    l_idle_fns = [on_idle]  # list of functions to call when 'gui' idle
 
     try:
         thread.start()
 
         print('starting event loop')
-        eventLoop = True
-        while eventLoop:
+        do_loop = True
+        while do_loop:
             time.sleep(1)  # pretend that main thread does other stuff
-            for idleFn in idleFns:
+            for idleFn in l_idle_fns:
                 idleFn()
 
     except KeyboardInterrupt:
@@ -114,10 +113,12 @@ def main():
         thread.stop()
 
     except Exception as exc:
+        print(exc)
         exc = sys.exc_info()[1]
         print(exc)
         print('Exception, stopping aux thread')
         thread.stop()
 
 
-main()
+if __name__ == '__main__':
+    main()

@@ -114,7 +114,8 @@ fn test_pixel_to_point() {
 ///
 fn render(pixels: &mut [u8], bounds: (usize, usize), tl: Complex<f64>, br: Complex<f64>) {
 
-	assert!(pixels.len() == bounds.0 * bounds.1);
+	// assert!(pixels.len() == bounds.0 * bounds.1);
+	assert_eq!(pixels.len(), bounds.0 * bounds.1);
 
 	for row in 0..bounds.1 {
 		if row % 100 == 0 {
@@ -162,6 +163,7 @@ fn main() {
 	println!("Some eg 2 is {:?}", escape_time(Complex{ re: 1.1, im: 0.1}, 8));  // {:?} helps when dealing with Option
 
 	let args: Vec<String> = std::env::args().collect();  // without type annotation .len() will fail
+	let strict = false;
 	if args.len() != 5 {
 		writeln!(std::io::stderr(), "usage:   mandelbrot FILE PIXELS TL BR").unwrap();
 		writeln!(std::io::stderr(), "example: {} mandel.png 600x400 -1.20,0.35 -1,0.2", args[0]).unwrap();
