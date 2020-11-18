@@ -15,31 +15,31 @@ constexpr int NTHREADS = 4;
 
 // Even if the shared variable is atomic, it must be modified under the mutex in order to correctly publish the modification to the waiting thread
 std::string data;
-bool ready = false;
-int processed = 0;
+bool bReady = false;
+int iFinish = 0;
 
 
 void worker_thread(int id)
 {
 	std::stringstream ss;
-	ss << "w" << id << " started\n"; std::cerr << ss.str(); ss.str("");
+	ss << "[w" << id << "] started\n"; std::cerr << ss.str(); ss.str("");
 
 	// Wait until main() sends data
 	{
 		std::unique_lock<std::mutex> lk(m);
 
-		cv.wait(lk, [] { return ready; });
+		cv.wait(lk, [] { return bReady; });
 
 		// after the wait, we own the lock.
-		ss << "w" << id << " is processing data\n"; std::cerr << ss.str(); ss.str("");
+		ss << "[w" << id << "] is processing data\n"; std::cerr << ss.str(); ss.str("");
 
 		std::this_thread::sleep_for(std::chrono::seconds(id));
 
 		data += " <done_" + std::to_string(id) + ">";
 
 		// Send data back to main()
-		processed ++;
-		ss << "w" << id << " signals data processing completed\n"; std::cerr << ss.str(); ss.str("");
+		iFinish ++;
+		ss << "[w" << id << "] signals data processing completed\n"; std::cerr << ss.str(); ss.str("");
 
 		// Manual unlocking is done before notifying, to avoid waking up
 		// the waiting thread only to block again (see notify_one for details)
@@ -49,36 +49,38 @@ void worker_thread(int id)
 }
 
 
-int main()
+void demo()
 {
 	std::stringstream ss;
-
-	std::vector<std::thread> vworkers;
+	std::vector<std::thread> vt;
 	for (int i=0; i<NTHREADS; i++)
-		vworkers.emplace_back(worker_thread, i);
+		vt.emplace_back(worker_thread, i);
 
-	//std::thread worker(worker_thread);
-
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::seconds(1));  // make sure all thread are waiting for cv
 	data = "Example data";
 
 	// send data to the worker thread
 	{
 		std::lock_guard<std::mutex> lk(m);
-		ready = true;
-		ss << "main() signals data ready for processing\n"; std::cerr << ss.str(); ss.str("");
+		bReady = true;
+		ss << "[main] signals data ready for processing\n"; std::cerr << ss.str(); ss.str("");
 	}
-	cv.notify_all();
+	cv.notify_all();  // outta mutex, or deadlocks!
 
 	// wait for the workers
 	{
 		std::unique_lock<std::mutex> lk(m);
-		cv.wait(lk, [] { return processed == NTHREADS; });
+		cv.wait(lk, [] { return iFinish % NTHREADS == 0; });
 	}
 
-	ss << "main() merged threads, data = \"" << data << "\"\n"; std::cerr << ss.str(); ss.str("");
+	ss << "[main] merged " << NTHREADS << " threads, data = \"" << data << "\"\n"; std::cerr << ss.str(); ss.str("");
 
-	for (auto & t : vworkers)
+	for (auto & t : vt)
 		t.join();
-	// worker.join();
+}
+
+int main()
+{
+	while (true)
+		demo();
 }

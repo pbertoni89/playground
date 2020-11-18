@@ -19,12 +19,12 @@ use std::cmp::Ordering;
    block of the body of a function. You can return early from a function by using the return
    keyword and specifying a value, but most functions return the last expression implicitly.
  */
-fn five() -> i32 {
+fn demo_five() -> i32 {
     5
 }
 
 
-fn main() {
+fn demo_guess() -> () {
     println!("Guess the number!");
 
     loop {
@@ -62,5 +62,32 @@ fn main() {
             Ordering::Greater => println!("too big")
         }
     }
+}
+
+
+/// TODO richiedi B = num_bytes
+/// calcola la serie 2^i con 0<=i<=B e registra per ogni i
+/// quanti caratteri ti servono per rappresentare l'elemento
+/// in base 10, in base 16, ed il loro rapporto
+/// alla fine sarebbe carino disegnare il plot
+fn demo_hexa(n_bytes: u32) -> () {
+    println!("\nper favore implementami! {} bytes", n_bytes);
+}
+
+
+/// TODO richiedi P = num_players, G = num_games
+/// estrai a caso G partite e i relativi risultati (win/loss)
+/// calcola media aritmetica della percentuale partite vinte
+fn demo_wot(n_players: u32, n_games: u32) -> f64 {
+    println!("\nper favore implementami! {} players, {} games", n_players, n_games);
+    // let rv = 3.14
+    3.14
+}
+
+
+fn main() {
+    demo_five();
+    demo_wot(8, 10);
+    demo_guess()
 }
 

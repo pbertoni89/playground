@@ -1,8 +1,11 @@
+/// FIXME What is this crate supposed to do?
+
 use std::thread;
 use std::net::{TcpListener, TcpStream, Shutdown};
 use std::io::{Read, Write};
 
 
+/// TODO get from library
 fn fibo(n: u64) -> u64 {
     // println!("fibo({})", n);
     let rv = match n {

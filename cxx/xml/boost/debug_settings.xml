@@ -1,0 +1,9 @@
+<debug>
+    <filename>debug.log</filename>
+    <modules>
+        <module bsa="21">Finance</module>
+        <module>Admin</module>
+        <module>HR</module>
+    </modules>
+    <level>2</level>
+</debug>

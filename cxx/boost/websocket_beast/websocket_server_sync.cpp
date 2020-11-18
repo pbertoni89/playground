@@ -1,3 +1,5 @@
+// https://www.boost.org/doc/libs/1_70_0/libs/beast/example/websocket/server/sync/websocket_server_sync.cpp
+
 //
 // Copyright (c) 2016-2017 Vinnie Falco (vinnie dot falco at gmail dot com)
 //

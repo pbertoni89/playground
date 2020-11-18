@@ -1,7 +1,5 @@
 /* http://stackoverflow.com/questions/9094422/how-to-check-if-a-stdthread-is-still-running */
 
-#include "stdafx.h"
-
 #include <future>
 #include <thread>
 #include <sstream>
@@ -9,40 +7,41 @@
 #include <iostream>
 #include <atomic>
 
-#define SECS_SLEEP 2
-#define SECS_SLEEP_MAJOR 3
+using namespace std::chrono_literals;
 
 
-void _thread_fun(int exSrc)
+void thread_fun(int exSrc)
 {
-	std::cout << std::this_thread::get_id() << "\tsleeping for " << SECS_SLEEP << "\tstart: must set " << exSrc << std::endl;
-
-	static int _exSrc = exSrc;
-
-	std::this_thread::sleep_for(std::chrono::seconds(SECS_SLEEP));
-	std::cout << std::this_thread::get_id() << "\tsleeping for " << SECS_SLEEP << "\tend  : had  set " << _exSrc << std::endl;
+	static int _exSrc = -1;
+	std::cout << std::this_thread::get_id() << "\tstart " << _exSrc << " <- " << exSrc << std::endl;
+	std::this_thread::sleep_for(2s);
+	_exSrc = exSrc;
+	std::cout << std::this_thread::get_id() << "\tend   " << _exSrc << " <- " << exSrc << std::endl;
 }
 
 
-void _print_status(int ex, int time, std::future_status status)
+/**
+ * https://en.cppreference.com/w/cpp/thread/future/wait_for
+ */
+void print_status(std::future_status status)
 {
-	std::stringstream ss;
-	ss << "ex" << ex << ":" << time << ": Thread ";
+	std::cout << "status ";
 
 	switch (status)
 	{
 	case std::future_status::ready:
-		ss << "ready (finished)";
+		std::cout << "ready (finished)";
 		break;
 	case std::future_status::deferred:
-		ss << "deferred (still running)";
+		std::cout << "deferred (not stated yet)";
 		break;
 	case std::future_status::timeout:
-		ss << "timeout (still running)";
+		std::cout << "timeout (still running)";
 		break;
+	default:
+		std::cout << "unknown";
 	}
-
-	std::cout << ss.str() << std::endl;
+	std::cout << std::endl;
 }
 
 
@@ -57,23 +56,20 @@ int ex1()
 	makes sure that the task is run asynchronously on a new thread */
 	auto future = std::async(std::launch::async, []
 	{
-		_thread_fun(1);
+		thread_fun(1);
 		return 8;
 	});
 
-	auto status = future.wait_for(std::chrono::milliseconds(0));
+	auto status = future.wait_for(20ms);
+	print_status(status);							// Still running ofc
 
-	_print_status(1, 1, status);							// Still running ofc
-
-	//  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
-
-	std::this_thread::sleep_for(std::chrono::seconds(SECS_SLEEP_MAJOR));
-	status = future.wait_for(std::chrono::milliseconds(0));
-	_print_status(1, 2, status);							//
+	std::this_thread::sleep_for(3s);
+	status = future.wait_for(0ms);
+	print_status(status);							// Should have finished
 
 	//  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
 
-	// future.get() is a BLOCKING CALL. It lasts for almost 2 seconds = duration of _thread_fun(), if previous block is commented.
+	// future.get() is a BLOCKING CALL. It lasts for almost 2 seconds = duration of thread_fun(), if previous block is commented.
 	// Otherwise, it would "steal" time from this wait
 
 	auto tic = std::chrono::high_resolution_clock::now();
@@ -82,20 +78,20 @@ int ex1()
 
 	auto toc = std::chrono::high_resolution_clock::now();
 
-	std::cout << "ex1: future.get() = " << result << " ran in "
-		<< std::chrono::duration_cast<std::chrono::nanoseconds>(toc-tic).count() << std::endl;
+	std::cout << "ex 1: future.get() = " << result << " ran in "
+		<< std::chrono::duration_cast<std::chrono::microseconds>(toc-tic).count() << " us" << std::endl;
 
 	//  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
 
 	// WILL THROW: FUTURE IS "FINISHED" YET, since I waited for its termination !
 	try
 	{
-		status = future.wait_for(std::chrono::milliseconds(0));
-		_print_status(1, 3, status);
+		status = future.wait_for(0ms);
+		print_status(status);
 	}
-	catch (std::exception& exc)
+	catch (const std::exception & exc)
 	{
-		std::cout << "EXCEPTION CAUGHT: " << exc.what() << std::endl;
+		std::cerr << "CAUGHT: " << exc.what() << std::endl;
 	}
 
 	return result;
@@ -112,13 +108,13 @@ void ex2()
 	// Run some task on a new thread
 	std::thread t([&p]
 	{
-		_thread_fun(2);
+		thread_fun(2);
 		p.set_value(true); // done atomically
 	});
 
-	auto status = future.wait_for(std::chrono::milliseconds(0));
+	auto status = future.wait_for(0ms);
 
-	_print_status(2, 1, status);
+	print_status(status);
 
 	t.join();
 }
@@ -132,7 +128,7 @@ void ex3()
 	// Run some task on a new thread. Make sure to set the done flag to true when finished
 	std::thread t([&done]
 	{
-		_thread_fun(3);
+		thread_fun(3);
 		done = true;
 	});
 
@@ -151,7 +147,7 @@ void ex4()
 	// Create a packaged_task using some task and get its future
 	std::packaged_task<void()> task([]
 	{
-		_thread_fun(4);
+		thread_fun(4);
 	});
 
 	auto future = task.get_future();
@@ -160,23 +156,53 @@ void ex4()
 	std::thread t(std::move(task));
 
 	// Get thread status using wait_for as before
-	auto status = future.wait_for(std::chrono::milliseconds(0));
+	auto status = future.wait_for(0ms);
 
-	_print_status(4, 1, status);
+	print_status(status);
 
 	t.join();
 }
 
 
+void ex5()
+{
+	std::future<int> f1;
+	std::cout << "getting a " << (f1.valid() ? "" : "in") << "valid future..." << std::endl;
+	try
+	{
+		f1.get();
+		std::cout << "got an invalid future" << std::endl;
+	}
+	catch (const std::future_error & FE)
+	{
+		std::cerr << "CAUGHT: " << FE.what() << std::endl;
+	}
+
+	std::future<int> f2 = std::async(std::launch::deferred, []
+	{
+		std::this_thread::sleep_for(2s);
+		return 8;
+	});
+
+	std::cout << "getting a " << (f2.valid() ? "" : "in") << "valid future..." << std::endl;
+	f2.get();
+	std::cout << "got an invalid future" << std::endl;
+}
+
+
 int main(int argc, char** argv)
 {
-	ex1();
-	ex2();
+	std::cout << "\n\n";
+	ex1(); std::cout << "\n\n";
+	ex2(); std::cout << "\n\n";
 
 	/** Both of these examples will output:
 			Thread still running
 		This is of course because the thread status is checked before the task is finished		*/
 
-	ex3();
-	ex4();
+	ex3(); std::cout << "\n\n";
+
+	ex4(); std::cout << "\n\n";
+
+	ex5(); std::cout << "\n\n";
 }
