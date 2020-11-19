@@ -1,3 +1,0 @@
-[submodule "pyground/cython_gpu/stdpar-cython"]
-	path = pyground/cython_gpu/stdpar-cython
-	url = https://github.com/pbertoni89/stdpar-cython
