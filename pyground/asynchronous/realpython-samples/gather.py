@@ -10,6 +10,8 @@ import logging
 # Once you go for asyncio, every critical region MUST be async. In facts, it is its rationale
 #
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)s %(message)s', datefmt='%H:%M:%S')
+
 
 async def count_async():
     """
@@ -43,7 +45,6 @@ def count_async_wrap(is_really_async: bool) -> None:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
     count_async_wrap(True)
+    print('')
     count_async_wrap(False)
