@@ -1,27 +1,10 @@
 /// FIXME What is this crate supposed to do?
 
+extern crate pbrlib;
+
 use std::thread;
 use std::net::{TcpListener, TcpStream, Shutdown};
 use std::io::{Read, Write};
-
-
-/// TODO get from library
-fn fibo(n: u64) -> u64 {
-    // println!("fibo({})", n);
-    let rv = match n {
-        1 => 1,
-        2 => 2,
-        m => fibo(m - 1) + fibo(m - 2)
-    };
-    
-    println!("fibo({}) = {}", n, rv);
-    rv
-}
-
-
-fn fact(n: u64) -> u64 {
-    n
-}
 
 
 ///
@@ -45,8 +28,8 @@ fn serve_request(msg: String) -> String {
     println!("asking {}({})", req_fun, req_val);
 
     let resp_val = match req_fun {
-        "fibo" => fibo(req_val),
-        "fact" => fact(req_val),
+        "fibo" => pbrlib::fibo(req_val),
+        "fact" => pbrlib::fact(req_val),
         _ => 0
     };
 
@@ -90,6 +73,7 @@ fn handle_client(mut stream: TcpStream) {
 
 /// accept connections and process them, spawning a new thread for each one
 fn main() {
+
     let listener = TcpListener::bind("0.0.0.0:3333").unwrap();
     println!("Server listening on port 3333");
 

@@ -45,10 +45,14 @@ fn demo_compiler() {
         )
         .collect();
 
-    println!("I: {}", input); // 1 0 1 A 1 0 1 3
+    println!("I: {}", input);  // 1 0 1 A 1 0 1 3
     println!("O: {}", output); // 0 1 0 A 0 1 0 3
 }
 
+
+/**
+ *
+ */
 fn demo_threads() {
     let handles: Vec<_> = (0..10)
         .map(|_| {

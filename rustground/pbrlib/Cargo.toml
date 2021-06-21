@@ -1,5 +1,5 @@
 [package]
-name = "various"
+name = "pbrlib"
 version = "0.1.0"
 authors = ["Patrizio Bertoni <pbertoni@x-next.com>"]
 edition = "2018"

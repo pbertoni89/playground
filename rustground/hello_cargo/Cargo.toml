@@ -1,6 +1,6 @@
 [package]
 name = "hello_cargo"
 version = "0.1.0"
-authors = ["SRV-DEV-0000 <pbertoni@x-next.com>"]
+authors = ["Patrizio Bertoni <pbertoni@x-next.com>"]
 
 [dependencies]
