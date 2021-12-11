@@ -80,20 +80,37 @@ fn demo_hexa(n_bytes: u32) -> () {
 }
 
 
-/// TODO richiedi P = num_players, G = num_games
-/// estrai a caso G partite e i relativi risultati (win/loss)
+/// TODO richiedi P = num_players, G = num_games da tastiera
+/// World of Tank rating system
+/// Ogni partita è giocata da P (pari) giocatori. Vengono giocate G partite in totale da questi.
+/// In ogni partita vengono generati due schieramenti casuali di pari dimensioni.
+/// La vittoria è assegnata casualmente a uno di questi. // TODO oppure si va a pareggio
+/// Ogni giocatore dunque incrementa il conteggio delle sue vittorie
+/// Alla fine si stampa la media delle partite vinte da ciascun giocatore
 /// calcola media aritmetica della percentuale partite vinte
 fn demo_wot(n_players: u32, n_games: u32) -> f64 {
     println!("\nper favore implementami! {} players, {} games", n_players, n_games);
+    let n_teams: u32 = 2;
 
-    if n_players % 2 == 1 {
-        println!("odd number of players");  // FIXME bad error checking
+    if n_players % n_teams == 1 {
+        println!("odd number of players");  // FIXME bad error checking, use match
         -1.2
     }
     else {
-        let mut vu_wins: Vec<u32> = vec![0; n_players];
+        let players_per_team = n_players / n_teams;
+        let mut vu_wins: Vec<u32> = vec![0; n_players as usize];
+
         for ig in 0 .. n_games {
-            println!("game {}", ig)
+            //let mut teams = Vec<Vec<u32>>();
+            for it in 0 .. n_teams {
+                println!("game {}, team {}", ig, it);
+                let mut idx_p_team: Vec<u32> = vec![0; players_per_team as usize];
+                for it in 0 .. players_per_team {
+                    let ip = rand::thread_rng().gen_range(0, n_players);
+                    println!("game {}", ig);
+                }
+                // teams[it] = idx_p_team;
+            }
         }
         3.14
     }
@@ -103,6 +120,6 @@ fn demo_wot(n_players: u32, n_games: u32) -> f64 {
 fn main() {
     demo_five();
     demo_wot(8, 10);
-    demo_guess()
+    // demo_guess()
 }
 
