@@ -12,6 +12,6 @@ edition = "2018"
 [dependencies]
 # num = "0.1.27"
 num = "0.4"
-image = "0.13.0"
+image = "0.23.12"
 # crossbeam = "0.2.8"
 crossbeam = "0.8"
