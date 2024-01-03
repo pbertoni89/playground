@@ -5,6 +5,7 @@ doc/
 __pycache__/
 
 CMakeFiles/
+cmake-build-debug/
 *cmake_install.cmake
 Makefile
 intel64/
