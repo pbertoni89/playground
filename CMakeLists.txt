@@ -56,15 +56,6 @@ find_package (CURL 7.68.0 REQUIRED)
 #	message (STATUS "<xnext> openmp support found with flags ${OpenMP_C_FLAGS} § ${OpenMP_CXX_FLAGS}")
 # endif ()
 
-# Resources: https://stackoverflow.com/questions/20746936/what-use-is-find-package-if-you-need-to-specify-cmake-module-path-anyway
-find_package (Valgrind MODULE)
-if (${Valgrind_FOUND})
-	message (STATUS "<xnext> valgrind support found")
-	add_compile_definitions (XS_VALGRIND)
-else ()
-	message (WARNING "<xnext> valgrind support not found")
-endif ()
-
 # OpenCV. That strange find_path we always had fixed either with
 # 1) symlinked wih `ln -s -T /usr/include/opencv4/ /usr/include/opencv2` + include_directories (/usr/include/opencv4/)
 # 2) cmaked with -DCMAKE_CXX_FLAGS=-isystem\ /usr/include/opencv4  (probably boils down to include_directories)
@@ -117,10 +108,7 @@ else ()
 	string (APPEND CMAKE_CXX_FLAGS " -Wfatal-errors")    # we want clean releases
 endif ()
 
-file (GLOB SOURCES "cxx/pthreads_mtx_cv.c")
-add_executable (pthreads_mtx_cv ${SOURCES})
-
-#  ~  ~  ~  ~  ~  ~  ~  ~  ~  LINK: XSPECTRA  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
+#  ~  ~  ~  ~  ~  ~  ~  ~  ~  LINKAGE  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
 function (our_target targetName)
 	set_target_properties (${targetName} PROPERTIES DEBUG_POSTFIX "-dbg")
 
@@ -140,4 +128,11 @@ function (our_target targetName)
 	#endif ()
 endfunction ()
 
+#  ~  ~  ~  ~  ~  ~  ~  ~  ~  TARGETS  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
+file (GLOB SOURCES "cxx/pthreads_mtx_cv.c")
+add_executable (pthreads_mtx_cv ${SOURCES})
 our_target (pthreads_mtx_cv)
+
+file (GLOB SOURCES "cxx/traits.cpp")
+add_executable (traits ${SOURCES})
+our_target (traits)
