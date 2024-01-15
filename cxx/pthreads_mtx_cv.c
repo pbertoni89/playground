@@ -9,24 +9,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
-#include <stdarg.h>  // variadic
+#include <stdarg.h>    // variadic
 #include <unistd.h>
-#include <time.h>  // gettimeofday
+#include <time.h>      // gettimeofday
 #include <sys/time.h>  // gettimeofday
-#include <errno.h>  // ETIMEDOUT
-#include <math.h>
+#include <errno.h>     // ETIMEDOUT
+// #include <math.h>
 
 pthread_mutex_t log_mutex;
 
 
-void micrologger(const char * const fmt, ...)
+void micrologger(const char actor, const char * const fmt, ...)
 {
 	char buff[128];
 
 	pthread_mutex_lock(&log_mutex);
 	const time_t now = time(0);
 	strftime(buff, 100, "%H:%M:%S", localtime(&now));
-	printf("%s: ", buff);
+	printf("%s\t%c\t", buff, actor);
 
 	va_list args;
 	va_start(args, fmt);
@@ -39,60 +39,75 @@ void micrologger(const char * const fmt, ...)
 
 typedef struct t_pt
 {
-	int x, y;
+	struct  // values
+	{
+		int x, y;
+	} v;
+
+	struct  // times
+	{
+		int tts_init_s, tts_cycle_a, timeout_s, niter_a;
+	} t;
 } t_pt;
 
 pthread_mutex_t cv_mutex;
 pthread_cond_t cv_cond;
 
+const int LOGMTX = 0;
 
-void * fun_cv_1(void * p)
+
+void * fun_cv_sensor(void * p)
 {
 	struct timeval now;
 	struct timespec timeout;
 	int retcode = 0;
+	const t_pt * const ppt = p;
 
-	micrologger("fun_cv_1 sleeping\n");
-	usleep(1000 * 1000 * 2);
+	micrologger('S', "sleeping %i [s], timeout %i [s] from lock\n", ppt->t.tts_init_s, ppt->t.timeout_s);
+	usleep(1000 * 1000 * ppt->t.tts_init_s);
 
-	micrologger("fun_cv_1 locking\n");
+	if (LOGMTX) micrologger('S', "locking\n");
 	pthread_mutex_lock(&cv_mutex);
 
 	gettimeofday(&now, NULL);
-	timeout.tv_sec = now.tv_sec + 5;
+	timeout.tv_sec = now.tv_sec + ppt->t.timeout_s;
 	timeout.tv_nsec = now.tv_usec * 1000;
 
-	const t_pt * const ppt = p;
-	while (ppt->x <= ppt->y && retcode != ETIMEDOUT)
+	while (ppt->v.x <= ppt->v.y && retcode != ETIMEDOUT)
 	{
-		micrologger("fun_cv_1 waiting, x<=y %d<=%d, retcode %d\n", ppt->x, ppt->y, retcode);
+		micrologger('S', "waiting condition, x<=y %i<=%i, retcode %i\n", ppt->v.x, ppt->v.y, retcode);
 		retcode = pthread_cond_timedwait(&cv_cond, &cv_mutex, &timeout);
 	}
 
-	micrologger("fun_cv_1 waited, x %d, y %d, retcode %d, ETIMEDOUT %d\n", ppt->x, ppt->y, retcode, ETIMEDOUT);
+	micrologger('S', "waited, x %i, y %i, retcode %i, ETIMEDOUT %i\n", ppt->v.x, ppt->v.y, retcode, ETIMEDOUT);
 
-	micrologger("fun_cv_1 unlocking\n");
+	if (LOGMTX) micrologger('S', "unlocking\n");
 	pthread_mutex_unlock(&cv_mutex);
 	return NULL;
 }
 
 
-void * fun_cv_2(void * p)
+void * fun_cv_actuator(void * p)
 {
-	micrologger("fun_cv_2 sleeping\n");
-	usleep(1000 * 1000 * 3);
-
-	micrologger("fun_cv_2 locking\n");
-	pthread_mutex_lock(&cv_mutex);
-
 	t_pt * const ppt = p;
-	micrologger("fun_cv_2 do something that may fulfill the condition: bumping x\n");
-	ppt->x ++;
 
-	micrologger("fun_cv_2 unlocking\n");
-	pthread_mutex_unlock(&cv_mutex);
+	for (int i=0; i<ppt->t.niter_a; i++)
+	{
+		micrologger('A', "sleeping %i [s], cycling %i/%i [#]\n", ppt->t.tts_cycle_a, i, ppt->t.niter_a);
+		usleep(1000 * 1000 * ppt->t.tts_cycle_a);
 
-	micrologger("fun_cv_2 wake up fun_cv_1\n");
+		if (LOGMTX) micrologger('A', "locking\n");
+		pthread_mutex_lock(&cv_mutex);
+
+		// do something that may fulfill the condition
+		micrologger('A', "bumping x -> %i\n", ppt->v.x + 1);
+		ppt->v.x ++;
+
+		if (LOGMTX) micrologger('A', "unlocking\n");
+		pthread_mutex_unlock(&cv_mutex);
+	}
+
+	micrologger('A', "signal condition\n");  // to wake up `sensor` thread
 	pthread_cond_signal(&cv_cond);
 	return NULL;
 }
@@ -177,15 +192,20 @@ int main()
 		pthread_mutex_init(&log_mutex, NULL);
 		pthread_mutex_init(&cv_mutex, NULL);
 		pthread_cond_init(&cv_cond, NULL);
-		pthread_t tcv1, tcv2;
+		pthread_t tcv_s, tcv_a;
 
 		t_pt pt;
-		pt.x = 10;
-		pt.y = 10;
-		pthread_create(&tcv1, NULL, &fun_cv_1, &pt);
-		pthread_create(&tcv2, NULL, &fun_cv_2, &pt);
-		pthread_join(tcv1, NULL);
-		pthread_join(tcv2, NULL);
+		pt.v.x = 0;
+		pt.v.y = 6;
+		pt.t.tts_init_s = 2;
+		pt.t.tts_cycle_a = 1;
+		pt.t.timeout_s = 20;
+		pt.t.niter_a = 10;
+
+		pthread_create(&tcv_s, NULL, &fun_cv_sensor, &pt);
+		pthread_create(&tcv_a, NULL, &fun_cv_actuator, &pt);
+		pthread_join(tcv_s, NULL);
+		pthread_join(tcv_a, NULL);
 	}
 
 	printf("exiting main\n");
